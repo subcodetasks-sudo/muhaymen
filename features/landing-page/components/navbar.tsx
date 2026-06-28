@@ -118,7 +118,7 @@ export function Navbar() {
           </motion.div>
         </button>
 
-        <div className="hidden items-center justify-center gap-7 md:flex">
+        <div className="hidden items-center justify-center gap-7 lg:flex">
           {NAV_SECTION_IDS.map((id) => (
             <button
               key={id}
@@ -131,7 +131,8 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden items-center justify-end gap-3 md:flex">
+        <div className="hidden items-center justify-end gap-3 lg:flex">
+          <LanguageToggle />
           <Button
             onClick={() => handleNavigate("contact")}
             className="rounded-full bg-primary px-6 font-bold text-primary-foreground hover:bg-primary/90"
@@ -140,7 +141,7 @@ export function Navbar() {
           </Button>
         </div>
 
-        <div className="col-span-2 flex items-center justify-end md:hidden">
+        <div className="col-span-2 flex items-center justify-end lg:hidden">
           <button
             type="button"
             className="cursor-pointer text-foreground"
@@ -186,7 +187,7 @@ export function Navbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="absolute inset-x-0 overflow-hidden border-b border-border/50 bg-background shadow-xl md:hidden"
+            className="absolute inset-x-0 overflow-hidden border-b border-border/50 bg-background shadow-xl lg:hidden"
           >
             <div className="flex flex-col gap-4 p-6">
               {NAV_SECTION_IDS.map((id) => (
