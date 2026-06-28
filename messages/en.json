@@ -1,0 +1,186 @@
+{
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "LandingPage": {
+    "title": "Muhaymin Marketing",
+    "description": "Muhaymin — a specialized digital marketing agency. Where digital dominance begins.",
+    "site": {
+      "email": "hello@muhaymin.com",
+      "phone": "+966 50 000 0000"
+    },
+    "nav": {
+      "contactCta": "Contact us",
+      "english": "English",
+      "arabic": "العربية",
+      "switchToEnglish": "Switch to English",
+      "switchToArabic": "Switch to Arabic",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "hero": "Home",
+      "services": "Services",
+      "portfolio": "Portfolio",
+      "clients": "Clients",
+      "about": "About"
+    },
+    "hero": {
+      "badge": "Muhaymin — where digital dominance begins",
+      "titlePrefix": "We ",
+      "titleHighlight": "dominate",
+      "titleSuffix": " the market,",
+      "titleLine2": "so you come first.",
+      "subtitle": "We create bold content and powerful ad campaigns that put your brand at the forefront. In a crowded world, being present is not enough — you need to dominate.",
+      "primaryCta": "Get started",
+      "secondaryCta": "Learn more"
+    },
+    "whatsapp": {
+      "badge": "Real WhatsApp conversations",
+      "title": "Our clients speak for themselves",
+      "subtitle": "Screenshots from WhatsApp chats with our clients — their words, unedited.",
+      "online": "Online now",
+      "inputPlaceholder": "Type a message...",
+      "conversations": {
+        "thooq": {
+          "clientName": "Thooq Restaurants",
+          "messages": [
+            { "sender": "client", "text": "I honestly did not expect results this fast! Sales rose 40% in Ramadan alone from the campaign you ran." },
+            { "sender": "agency", "text": "Alhamdulillah, that is always our goal. Welcome anytime." },
+            { "sender": "client", "text": "Honestly the best agency I have worked with. Thank you so much." }
+          ]
+        },
+        "lara": {
+          "clientName": "Lara Brand",
+          "messages": [
+            { "sender": "client", "text": "The logo turned out better than I imagined! The visual identity is complete and very professional." },
+            { "sender": "agency", "text": "We are glad you loved the result and look forward to continuing together." },
+            { "sender": "client", "text": "Absolutely! I will recommend you to everyone I know." }
+          ]
+        },
+        "masar": {
+          "clientName": "Masar Company",
+          "messages": [
+            { "sender": "client", "text": "The Google campaign cut booking cost from 85 SAR to 32 SAR! That is 62% savings — I could not believe the report." },
+            { "sender": "agency", "text": "We always aim for the best result with the smallest budget." },
+            { "sender": "client", "text": "MashaAllah, truly professional work." }
+          ]
+        }
+      }
+    },
+    "about": {
+      "badge": "Muhaymin team",
+      "title": "A team that builds dominance",
+      "headline": "A marketing agency built on",
+      "headlineHighlight": "dominance",
+      "headlineSuffix": ", not just presence.",
+      "paragraph1": "Muhaymin is a specialized digital marketing agency founded with one goal: to make your brand first in its field — not merely present. We combine creativity, data, and deep understanding of the Arabic market to create unforgettable campaigns and measurable results.",
+      "paragraph2": "Our team of content, ads, branding, and analytics specialists works as an extension of your team, not an outside vendor.",
+      "values": {
+        "creativity": { "title": "Limitless creativity", "description": "Fresh ideas in every campaign" },
+        "data": { "title": "Data-driven decisions", "description": "Every decision backed by numbers" },
+        "partnership": { "title": "True partnership", "description": "We win together or not at all" },
+        "results": { "title": "Measured results", "description": "Clear ROI in every report" }
+      },
+      "team": {
+        "initial": "M",
+        "title": "Muhaymin team",
+        "description": "Specialists in content, ads, visual identity, and analytics"
+      }
+    },
+    "services": {
+      "badge": "Services that make the difference",
+      "title": "Integrated marketing solutions",
+      "subtitle": "Tailored marketing solutions designed for your brand's needs and built to keep you ahead.",
+      "items": {
+        "content": { "tag": "Content design", "title": "Content creation", "description": "Creative copy that reflects your identity and captivates your audience." },
+        "social": { "tag": "Social media", "title": "Social media management", "description": "We build strong presence and daily engagement with your target audience." },
+        "branding": { "tag": "Branding", "title": "Visual identity", "description": "Memorable branding that sets you apart from every competitor." },
+        "ads": { "tag": "Paid ads", "title": "Paid advertising", "description": "Carefully targeted campaigns for maximum return on investment." },
+        "seo": { "tag": "SEO", "title": "Search engine optimization", "description": "We rank at the top so customers find you easily." },
+        "video": { "tag": "Video production", "title": "Visual production", "description": "Professional videos and designs that tell your story at its best." }
+      }
+    },
+    "portfolio": {
+      "title": "Work we are proud of",
+      "subtitle": "A look at some campaigns and projects where we made the difference and achieved dominance.",
+      "filters": {
+        "all": "All",
+        "social": "Social media",
+        "paidAds": "Paid ads",
+        "branding": "Branding",
+        "video": "Video production",
+        "content": "Content design"
+      },
+      "items": {
+        "deliveryApp": { "title": "Delivery app launch campaign", "category": "Paid ads", "result": "320% download growth in one month" },
+        "cafe": { "title": "Specialty cafe visual identity", "category": "Branding", "result": "Logo, colors, print, and integrated digital presence" },
+        "fashion": { "title": "Fashion brand account management", "category": "Social media", "result": "80K follower growth in 6 months with above-average engagement" },
+        "realEstate": { "title": "Real estate company promo film", "category": "Video production", "result": "Professional production with international broadcast standards" },
+        "ramadan": { "title": "Ramadan content for restaurant chain", "category": "Content design", "result": "30 integrated posts raised sales 55% during the month" },
+        "clinic": { "title": "Google Ads campaign for clinic", "category": "Paid ads", "result": "Booking cost 8 SAR instead of 42 SAR — 80% savings" },
+        "logistics": { "title": "Logistics company rebrand", "category": "Branding", "result": "New identity raised brand value and attracted major clients" },
+        "sports": { "title": "TikTok management for sports brand", "category": "Social media", "result": "3 viral videos each passed one million views" },
+        "motion": { "title": "Product motion graphics", "category": "Video production", "result": "Short video series raised conversions 90%" }
+      }
+    },
+    "clients": {
+      "badge": "Clients who built dominance with us",
+      "title": "Real brands that dared to lead",
+      "subtitle": "We were with them every step of the way",
+      "items": {
+        "thooq": { "name": "Thooq Restaurants", "sector": "Restaurants", "highlight": "+40% Ramadan sales", "detail": "Integrated content and ad campaign" },
+        "noor": { "name": "Noor Clinic", "sector": "Healthcare", "highlight": "Booking cost from 85 to 32 SAR", "detail": "Targeted Google Ads campaigns" },
+        "lara": { "name": "Lara Brand", "sector": "Fashion", "highlight": "Complete visual identity", "detail": "Logo, colors, and print assets" },
+        "masar": { "name": "Masar Company", "sector": "Logistics", "highlight": "+62% sales in 4 months", "detail": "Rebrand and digital campaigns" },
+        "reyada": { "name": "Reyada Platform", "sector": "Digital education", "highlight": "500+ sign-ups in first course", "detail": "Multi-channel launch campaign" },
+        "gulf": { "name": "Gulf Real Estate", "sector": "Real estate", "highlight": "Promo film closed 3 deals", "detail": "Professional video production" }
+      }
+    },
+    "stats": {
+      "clients": { "value": "+120", "label": "Happy clients" },
+      "years": { "value": "+8", "label": "Years of experience" },
+      "campaigns": { "value": "+350", "label": "Successful campaigns" },
+      "satisfaction": { "value": "98%", "label": "Satisfaction rate" }
+    },
+    "process": {
+      "badge": "Methodology",
+      "title": "How we work with you",
+      "subtitle": "Every step brings you closer to the top — this is not just marketing, this is building dominance.",
+      "stepLabel": "Step {num}",
+      "summit": "The summit",
+      "steps": {
+        "01": { "title": "Free consultation", "description": "We deeply understand your brand, goals, and audience — with no commitment.", "mobileDescription": "We deeply understand your brand, goals, and audience — with no commitment." },
+        "02": { "title": "Custom strategy", "description": "A detailed, step-by-step marketing plan that is clear and measurable.", "mobileDescription": "A detailed, step-by-step marketing plan that is clear and measurable." },
+        "03": { "title": "Professional execution", "description": "Campaigns, content, and ads delivered to the highest quality on schedule.", "mobileDescription": "Campaigns, content, and ads delivered to the highest quality." },
+        "04": { "title": "Monitoring and optimization", "description": "We track numbers daily and adjust to get the best result from every riyal.", "mobileDescription": "We track numbers daily and adjust to get the best result." },
+        "05": { "title": "Results and dominance", "description": "Comprehensive reports showing reach, engagement, sales, and ROI.", "mobileDescription": "Comprehensive reports for reach, engagement, sales, and ROI." }
+      }
+    },
+    "blog": {
+      "badge": "Articles",
+      "title": "From the Muhaymin marketing kitchen",
+      "cta": "All articles",
+      "posts": {
+        "instagram": { "title": "Why 90% of company Instagram accounts do not sell?", "excerpt": "The truth no one tells you about the difference between presence and dominance on social media.", "category": "Social media", "date": "June 15, 2026" },
+        "ads": { "title": "How to cut ad cost by 60% while doubling results", "excerpt": "The smart Lookalike strategy we use with clients to launch campaigns with lower budget and higher conversions.", "category": "Digital ads", "date": "June 8, 2026" },
+        "branding": { "title": "Your brand is either unforgettable — or forgotten. No middle ground.", "excerpt": "A practical guide to building visual identity that keeps your brand in the customer's mind for weeks.", "category": "Visual identity", "date": "June 1, 2026" }
+      }
+    },
+    "contact": {
+      "title": "Ready to dominate?",
+      "subtitle": "Let's talk about your next project and plan how to put your brand at the center of the market.",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Example: Mohammed Abdullah",
+      "emailPlaceholder": "example@email.com",
+      "messageLabel": "Your message",
+      "messagePlaceholder": "Tell us about your goals and what you want to achieve...",
+      "submitLabel": "Send message",
+      "successTitle": "Message sent successfully",
+      "successDescription": "We will contact you as soon as possible."
+    },
+    "footer": {
+      "copyright": "All rights reserved — Muhaymin Marketing Agency."
+    }
+  }
+}
