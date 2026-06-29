@@ -12,6 +12,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Link, usePathname } from "@/i18n/navigation";
 import { LanguageToggle } from "./language-toggle";
 import { LOGO_PATH, NAV_SECTION_IDS } from "../lib/constants";
 import { scrollToSection } from "../lib/scroll-to-section";
@@ -60,6 +61,8 @@ const mobileMenuItemVariants = {
 
 export function Navbar() {
   const t = useTranslations("LandingPage.nav");
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
   const scrollProgress = useTransform(scrollY, [0, SCROLL_RANGE], [0, 1], {
@@ -87,6 +90,78 @@ export function Navbar() {
     setIsOpen(false);
   };
 
+  const closeMenu = () => setIsOpen(false);
+
+  const navLinkClassName =
+    "cursor-pointer whitespace-nowrap text-sm font-bold transition-colors hover:text-primary";
+  const mobileNavLinkClassName =
+    "cursor-pointer border-b border-border/50 py-2 text-end text-lg font-medium transition-colors hover:text-primary";
+
+  const renderNavItem = (id: string, className: string, mobile = false) => {
+    const label = t(id);
+    const href = `/#${id}` as const;
+
+    if (isHome) {
+      const Component = mobile ? motion.button : "button";
+      return (
+        <Component
+          key={id}
+          type="button"
+          {...(mobile ? { variants: mobileMenuItemVariants } : {})}
+          onClick={() => handleNavigate(id)}
+          className={className}
+        >
+          {label}
+        </Component>
+      );
+    }
+
+    if (mobile) {
+      return (
+        <motion.div key={id} variants={mobileMenuItemVariants}>
+          <Link href={href} onClick={closeMenu} className={className}>
+            {label}
+          </Link>
+        </motion.div>
+      );
+    }
+
+    return (
+      <Link key={id} href={href} className={className}>
+        {label}
+      </Link>
+    );
+  };
+
+  const renderContactCta = (className: string, mobile = false) => {
+    const label = t("contactCta");
+    const href = "/#contact" as const;
+
+    if (isHome) {
+      return (
+        <Button onClick={() => handleNavigate("contact")} className={className}>
+          {label}
+        </Button>
+      );
+    }
+
+    if (mobile) {
+      return (
+        <Button asChild className={className}>
+          <Link href={href} onClick={closeMenu}>
+            {label}
+          </Link>
+        </Button>
+      );
+    }
+
+    return (
+      <Button asChild className={className}>
+        <Link href={href}>{label}</Link>
+      </Button>
+    );
+  };
+
   return (
     <motion.nav
       style={{ height: navHeight, boxShadow }}
@@ -101,44 +176,51 @@ export function Navbar() {
         style={{ height: navHeight, paddingInline: navPaddingX }}
         className="relative container mx-auto grid grid-cols-3 items-center"
       >
-        <button
-          type="button"
-          className="flex cursor-pointer items-center justify-start"
-          onClick={() => handleNavigate("hero")}
-        >
-          <motion.div style={{ height: logoHeight }} className="relative w-auto">
-            <Image
-              src={LOGO_PATH}
-              alt="Muhaymin Logo"
-              width={120}
-              height={48}
-              className="h-full w-auto"
-              priority
-            />
-          </motion.div>
-        </button>
+        {isHome ? (
+          <button
+            type="button"
+            className="flex cursor-pointer items-center justify-start"
+            onClick={() => handleNavigate("hero")}
+          >
+            <motion.div style={{ height: logoHeight }} className="relative w-auto">
+              <Image
+                src={LOGO_PATH}
+                alt="Muhaymin Logo"
+                width={120}
+                height={48}
+                className="h-full w-auto"
+                priority
+              />
+            </motion.div>
+          </button>
+        ) : (
+          <Link
+            href="/"
+            className="flex cursor-pointer items-center justify-start"
+            onClick={closeMenu}
+          >
+            <motion.div style={{ height: logoHeight }} className="relative w-auto">
+              <Image
+                src={LOGO_PATH}
+                alt="Muhaymin Logo"
+                width={120}
+                height={48}
+                className="h-full w-auto"
+                priority
+              />
+            </motion.div>
+          </Link>
+        )}
 
         <div className="hidden items-center justify-center gap-7 lg:flex">
-          {NAV_SECTION_IDS.map((id) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => handleNavigate(id)}
-              className="cursor-pointer whitespace-nowrap text-sm font-bold transition-colors hover:text-primary"
-            >
-              {t(id)}
-            </button>
-          ))}
+          {NAV_SECTION_IDS.map((id) => renderNavItem(id, navLinkClassName))}
         </div>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
           <LanguageToggle />
-          <Button
-            onClick={() => handleNavigate("contact")}
-            className="rounded-full bg-primary px-6 font-bold text-primary-foreground hover:bg-primary/90"
-          >
-            {t("contactCta")}
-          </Button>
+          {renderContactCta(
+            "rounded-full bg-primary px-6 font-bold text-primary-foreground hover:bg-primary/90",
+          )}
         </div>
 
         <div className="col-span-2 flex items-center justify-end lg:hidden">
@@ -190,28 +272,18 @@ export function Navbar() {
             className="absolute inset-x-0 overflow-hidden border-b border-border/50 bg-background shadow-xl lg:hidden"
           >
             <div className="flex flex-col gap-4 p-6">
-              {NAV_SECTION_IDS.map((id) => (
-                <motion.button
-                  key={id}
-                  type="button"
-                  variants={mobileMenuItemVariants}
-                  onClick={() => handleNavigate(id)}
-                  className="cursor-pointer border-b border-border/50 py-2 text-end text-lg font-medium transition-colors hover:text-primary"
-                >
-                  {t(id)}
-                </motion.button>
-              ))}
+              {NAV_SECTION_IDS.map((id) =>
+                renderNavItem(id, mobileNavLinkClassName, true),
+              )}
               <motion.div
                 variants={mobileMenuItemVariants}
                 className="mt-2 flex items-center gap-3"
               >
                 <LanguageToggle />
-                <Button
-                  onClick={() => handleNavigate("contact")}
-                  className="flex-1 bg-primary font-bold text-primary-foreground hover:bg-primary/90"
-                >
-                  {t("contactCta")}
-                </Button>
+                {renderContactCta(
+                  "flex-1 bg-primary font-bold text-primary-foreground hover:bg-primary/90",
+                  true,
+                )}
               </motion.div>
             </div>
           </motion.div>

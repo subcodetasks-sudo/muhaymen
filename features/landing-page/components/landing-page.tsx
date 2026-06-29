@@ -7,7 +7,6 @@ import { ContactSection } from "./contact-section";
 import { CustomCursor } from "./custom-cursor";
 import { Footer } from "./footer";
 import { HeroSection } from "./hero-section";
-import { Navbar } from "./navbar";
 import { PortfolioSection } from "./portfolio-section";
 import { ProcessSection } from "./process-section";
 import { ServicesSection } from "./services-section";
@@ -26,11 +25,9 @@ export async function LandingPage() {
 
   return (
     <div
-      className={`landing-page min-h-screen overflow-hidden bg-background ${fontClass} text-foreground selection:bg-primary selection:text-primary-foreground`}
+      className={`landing-page min-h-screen overflow-x-clip bg-background ${fontClass} text-foreground selection:bg-primary selection:text-primary-foreground`}
     >
       <CustomCursor />
-      <Navbar />
-
       <HeroSection {...localeProps} />
       <WhatsAppSection />
       <AboutSection {...localeProps} />
