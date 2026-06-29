@@ -12,11 +12,10 @@ import {
   PROCESS_STEP_CONFIG,
   PROCESS_STEP_KEYS,
 } from "../lib/constants";
-import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
 import { cn } from "@/lib/utils";
 
 const STEP_COUNT = PROCESS_STEP_KEYS.length;
-const DESKTOP_SCROLL_HEIGHT = `${STEP_COUNT * 100}vh`;
+const SCROLL_HEIGHT = `${STEP_COUNT * 100}vh`;
 const SECTION_GRADIENT =
   "linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #fde68a22 100%)";
 
@@ -83,7 +82,7 @@ function ProcessStepSlide({
     >
       <div
         className={cn(
-          "relative w-full max-w-3xl rounded-3xl border-2 p-8 shadow-xl md:p-10",
+          "relative w-full max-w-3xl rounded-3xl border-2 p-6 shadow-xl sm:p-8",
           isCrown
             ? "border-primary bg-primary shadow-primary/30"
             : "border-primary/20 bg-white dark:bg-card",
@@ -97,7 +96,7 @@ function ProcessStepSlide({
 
         <div
           className={cn(
-            "pointer-events-none absolute inset-e-8 top-6 select-none text-8xl font-black leading-none",
+            "pointer-events-none absolute inset-e-6 top-5 select-none text-6xl font-black leading-none sm:text-8xl",
             isCrown ? "text-white/15" : "text-primary/8",
           )}
         >
@@ -107,7 +106,7 @@ function ProcessStepSlide({
         <div className="relative z-10 max-w-2xl">
           <div
             className={cn(
-              "mb-4 inline-block rounded-full px-3 py-1 text-sm font-bold",
+              "mb-3 inline-block rounded-full px-3 py-1 text-sm font-bold",
               isCrown ? "bg-white/20 text-white" : "bg-primary/10 text-primary",
             )}
           >
@@ -115,7 +114,7 @@ function ProcessStepSlide({
           </div>
           <h3
             className={cn(
-              "mb-3 text-2xl font-black leading-tight md:text-3xl",
+              "mb-2 text-xl font-black leading-tight sm:mb-3 sm:text-2xl",
               isCrown ? "text-white" : "text-foreground",
             )}
           >
@@ -123,11 +122,11 @@ function ProcessStepSlide({
           </h3>
           <p
             className={cn(
-              "text-base leading-relaxed md:text-lg",
+              "text-sm leading-relaxed sm:text-base",
               isCrown ? "text-white/85" : "text-muted-foreground",
             )}
           >
-            {t(`steps.${stepKey}.description`)}
+            {t(`steps.${stepKey}.mobileDescription`)}
           </p>
         </div>
       </div>
@@ -243,7 +242,7 @@ function ProcessBarColumn({
   );
 }
 
-function ProcessDesktopSticky() {
+function ProcessStickySection() {
   const t = useTranslations("LandingPage.process");
   const containerRef = useRef<HTMLElement>(null);
 
@@ -257,28 +256,28 @@ function ProcessDesktopSticky() {
   return (
     <section
       ref={containerRef}
-      className="relative hidden md:block"
-      style={{ height: DESKTOP_SCROLL_HEIGHT }}
+      className="relative"
+      style={{ height: SCROLL_HEIGHT }}
     >
       <div
-        className="sticky top-0 flex h-svh flex-col px-6"
+        className="sticky top-0 flex h-svh flex-col px-4 sm:px-6"
         style={{ background: SECTION_GRADIENT }}
       >
         <div className="container mx-auto flex h-full max-w-6xl flex-col">
-          <div className="shrink-0 pt-12 pb-6 text-center [@media(min-height:800px)]:pt-16 [@media(min-height:800px)]:pb-8">
-            <span className="mb-4 inline-block rounded-full bg-primary/15 px-5 py-2 text-sm font-black tracking-wider text-primary">
+          <div className="shrink-0 pt-14 pb-4 text-center sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-8">
+            <span className="mb-3 inline-block rounded-full bg-primary/15 px-4 py-1.5 text-xs font-black tracking-wider text-primary sm:mb-4 sm:px-5 sm:py-2 sm:text-sm">
               {t("badge")}
             </span>
-            <h2 className="mb-3 text-4xl font-black text-foreground md:text-5xl">
+            <h2 className="mb-2 text-3xl font-black text-foreground sm:mb-3 sm:text-4xl lg:text-5xl">
               {t("title")}
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+            <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
               {t("subtitle")}
             </p>
           </div>
 
-          {/* Short viewport: card slides */}
-          <div className="relative min-h-0 flex-1 [@media(min-height:800px)]:hidden">
+          {/* Mobile & tablet: sticky card slides */}
+          <div className="relative min-h-0 flex-1 lg:hidden">
             {PROCESS_STEP_KEYS.map((key, index) => (
               <ProcessStepSlide
                 key={key}
@@ -290,15 +289,9 @@ function ProcessDesktopSticky() {
             ))}
           </div>
 
-          {/* Tall viewport: bar chart growing from axis */}
-          <div className="hidden min-h-0 flex-1 flex-col justify-end pb-4 [@media(min-height:800px)]:flex">
-            <div className="relative flex items-end gap-3">
-              <div className="absolute bottom-0 left-0 right-0 h-1 rounded-full bg-primary/10" />
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-1 origin-left rounded-full bg-linear-to-r from-primary/80 via-primary/60 to-primary"
-                style={{ scaleX: progressLineScale }}
-              />
-
+          {/* Laptop & desktop: bar chart growing from axis */}
+          <div className="hidden min-h-0 flex-1 flex-col justify-end pb-4 lg:flex">
+            <div className="relative mb-4 flex items-end gap-3">
               {PROCESS_STEP_KEYS.map((key, index) => (
                 <ProcessBarColumn
                   key={key}
@@ -309,11 +302,18 @@ function ProcessDesktopSticky() {
                 />
               ))}
             </div>
+
+            <div className="relative h-1 overflow-hidden rounded-full bg-primary/10">
+              <motion.div
+                className="absolute inset-0 origin-left rounded-full bg-linear-to-r from-primary/80 via-primary/60 to-primary"
+                style={{ scaleX: progressLineScale }}
+              />
+            </div>
           </div>
 
-          {/* Short viewport footer */}
-          <div className="shrink-0 pb-8 [@media(min-height:800px)]:hidden">
-            <div className="relative mb-5 h-1 overflow-hidden rounded-full bg-primary/10">
+          {/* Mobile & tablet: progress footer */}
+          <div className="shrink-0 pb-6 sm:pb-8 lg:hidden">
+            <div className="relative mb-4 h-1 overflow-hidden rounded-full bg-primary/10 sm:mb-5">
               <motion.div
                 className="absolute inset-0 origin-left rounded-full bg-linear-to-r from-primary/80 via-primary/60 to-primary"
                 style={{ scaleX: progressLineScale }}
@@ -335,91 +335,6 @@ function ProcessDesktopSticky() {
   );
 }
 
-function ProcessMobileList() {
-  const t = useTranslations("LandingPage.process");
-
-  return (
-    <section
-      className="px-6 py-24 md:hidden"
-      style={{ background: SECTION_GRADIENT }}
-    >
-      <div className="container mx-auto max-w-6xl">
-        <ScrollAnimationWrapper type="fade-up" threshold={0.2}>
-          <div className="mb-12 text-center">
-            <span className="mb-5 inline-block rounded-full bg-primary/15 px-5 py-2 text-sm font-black tracking-wider text-primary">
-              {t("badge")}
-            </span>
-            <h2 className="mb-4 text-4xl font-black text-foreground">
-              {t("title")}
-            </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-              {t("subtitle")}
-            </p>
-          </div>
-        </ScrollAnimationWrapper>
-
-        <div className="space-y-4">
-          {PROCESS_STEP_KEYS.map((key, index) => {
-            const config = PROCESS_STEP_CONFIG[key];
-            const isCrown = config.crown ?? false;
-
-            return (
-              <ScrollAnimationWrapper
-                key={key}
-                type="fade-left"
-                delay={index * 0.08}
-                duration={0.45}
-                threshold={0.15}
-              >
-                <div
-                  className={cn(
-                    "flex items-start gap-4 rounded-2xl border-2 p-6",
-                    isCrown
-                      ? "border-primary bg-primary"
-                      : "border-primary/20 bg-white dark:bg-card",
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "shrink-0 text-3xl font-black leading-none",
-                      isCrown ? "text-white/30" : "text-primary/20",
-                    )}
-                  >
-                    {key}
-                  </div>
-                  <div>
-                    <h3
-                      className={cn(
-                        "mb-1 text-lg font-black",
-                        isCrown ? "text-white" : "text-foreground",
-                      )}
-                    >
-                      {t(`steps.${key}.title`)}
-                    </h3>
-                    <p
-                      className={cn(
-                        "text-sm",
-                        isCrown ? "text-white/80" : "text-muted-foreground",
-                      )}
-                    >
-                      {t(`steps.${key}.mobileDescription`)}
-                    </p>
-                  </div>
-                </div>
-              </ScrollAnimationWrapper>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function ProcessSection() {
-  return (
-    <>
-      <ProcessDesktopSticky />
-      <ProcessMobileList />
-    </>
-  );
+  return <ProcessStickySection />;
 }
