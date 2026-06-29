@@ -139,13 +139,10 @@
   --radius: 0.75rem;
 }
 
-.landing-page {
-  cursor: none;
-}
-
-@media (max-width: 768px) {
-  .landing-page {
-    cursor: auto;
+@media (min-width: 768px) {
+  .landing-page,
+  .landing-page * {
+    cursor: none !important;
   }
 }
 
