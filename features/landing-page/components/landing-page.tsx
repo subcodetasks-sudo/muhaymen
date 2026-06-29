@@ -18,14 +18,9 @@ export async function LandingPage() {
   const locale = (await getLocale()) as AppLocale;
   const direction = getDirection(locale);
   const localeProps = { locale, direction };
-  const fontClass =
-    locale === "ar"
-      ? "font-[family-name:var(--font-tajawal)]"
-      : "font-[family-name:var(--font-geist-sans)]";
-
   return (
     <div
-      className={`landing-page min-h-screen overflow-x-clip bg-background ${fontClass} text-foreground selection:bg-primary selection:text-primary-foreground`}
+      className="landing-page min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground"
     >
       <CustomCursor />
       <HeroSection {...localeProps} />

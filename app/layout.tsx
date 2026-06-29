@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Tajawal } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
 import Providers from "@/app/providers";
 import { getDirection } from "@/i18n/locale";
@@ -16,10 +17,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic"],
-  weight: ["300", "400", "500", "700", "800", "900"],
+const zain = localFont({
+  src: "../fonts/alfont_com_zain-mob-long500.ttf",
+  variable: "--font-zain",
+  weight: "500",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -39,7 +41,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={direction}
-      className={`${geistSans.variable} ${geistMono.variable} ${tajawal.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${zain.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
