@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Tajawal } from "next/font/google";
 import { getLocale } from "next-intl/server";
-import { AppToaster } from "@/components/app-toaster";
 import Providers from "@/app/providers";
 import { getDirection } from "@/i18n/locale";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +43,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
-        <AppToaster />
+        <Toaster theme="light" position="top-center" richColors />
       </body>
     </html>
   );
