@@ -1,4 +1,4 @@
-export const LOGO_PATH = "/landing/logo.webp";
+export const LOGO_PATH = "/landing/logo-orange.webp";
 export const ABOUT_US_IMAGE_PATH = "/landing/about-us.webp";
 
 export const NAV_SECTION_IDS = [
@@ -94,6 +94,18 @@ export const CLIENT_KEYS = [
   "reyada",
   "gulf",
 ] as const;
+
+export const CLIENT_IMAGE_BY_KEY: Record<
+  (typeof CLIENT_KEYS)[number],
+  string
+> = {
+  thooq: "/landing/restaurant.webp",
+  noor: "/landing/clinic-google-ads.webp",
+  lara: "/landing/clothing-store.webp",
+  masar: "/landing/logistics.webp",
+  reyada: "/landing/phone-store.webp",
+  gulf: "/landing/property.webp",
+};
 
 export const BLOG_KEYS = ["instagram", "ads", "branding"] as const;
 

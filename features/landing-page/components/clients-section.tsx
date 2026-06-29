@@ -1,77 +1,46 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { CLIENT_KEYS } from "../lib/constants";
+import { CLIENT_IMAGE_BY_KEY, CLIENT_KEYS } from "../lib/constants";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
 
-const clientStyles: Record<
-  string,
-  { icon: string; bg: string; border: string; badge: string }
-> = {
-  thooq: {
-    icon: "🍽",
-    bg: "bg-orange-50/70 dark:bg-orange-950/10",
-    border: "border-orange-200 dark:border-orange-900/30",
-    badge: "bg-primary text-white",
-  },
-  noor: {
-    icon: "🏥",
-    bg: "bg-yellow-50/70 dark:bg-yellow-950/10",
-    border: "border-yellow-200 dark:border-yellow-900/30",
-    badge: "bg-primary text-white",
-  },
-  lara: {
-    icon: "👗",
-    bg: "bg-amber-50/70 dark:bg-amber-950/10",
-    border: "border-amber-200 dark:border-amber-900/30",
-    badge: "bg-primary text-white",
-  },
-  masar: {
-    icon: "🚛",
-    bg: "bg-yellow-50/70 dark:bg-yellow-950/10",
-    border: "border-yellow-200 dark:border-yellow-900/30",
-    badge: "bg-foreground text-background",
-  },
-  reyada: {
-    icon: "🎓",
-    bg: "bg-orange-50/70 dark:bg-orange-950/10",
-    border: "border-orange-200 dark:border-orange-900/30",
-    badge: "bg-foreground text-background",
-  },
-  gulf: {
-    icon: "🏙",
-    bg: "bg-amber-50/70 dark:bg-amber-950/10",
-    border: "border-amber-200 dark:border-amber-900/30",
-    badge: "bg-foreground text-background",
-  },
+const clientBadgeStyles: Record<string, string> = {
+  thooq: "bg-primary text-white",
+  noor: "bg-primary text-white",
+  lara: "bg-primary text-white",
+  masar: "bg-foreground text-background",
+  reyada: "bg-foreground text-background",
+  gulf: "bg-foreground text-background",
 };
 
 export async function ClientsSection() {
   const t = await getTranslations("LandingPage.clients");
 
   return (
-    <section id="clients" className="py-24 px-6 bg-white dark:bg-background">
+    <section id="clients" className="bg-white px-6 py-24 dark:bg-background">
       <div className="container mx-auto max-w-6xl">
-        <ScrollAnimationWrapper type="fade-up" threshold={0.2}>
-          <div className="text-center mb-16">
-            <span className="inline-block bg-primary/15 text-primary font-black text-sm px-5 py-2 rounded-full mb-5 tracking-wider">
-              {t("badge")}
-            </span>
-            <h2 className="text-4xl font-black text-foreground mb-4">
-              {t("title")}
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-              {t("subtitle")}
-            </p>
-          </div>
-        </ScrollAnimationWrapper>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <ScrollAnimationWrapper
+            type="fade-up"
+            threshold={0.2}
+            className="md:col-span-2 lg:col-span-1 lg:row-span-2"
+          >
+            <div className="flex h-full flex-col justify-center rounded-2xl border-2 border-border bg-muted/30 p-8 lg:min-h-[420px]">
+              <span className="mb-5 inline-block w-fit rounded-full bg-primary/15 px-5 py-2 text-sm font-black tracking-wider text-primary">
+                {t("badge")}
+              </span>
+              <h2 className="mb-4 text-4xl font-black text-foreground">
+                {t("title")}
+              </h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                {t("subtitle")}
+              </p>
+            </div>
+          </ScrollAnimationWrapper>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {CLIENT_KEYS.map((key, index) => {
-            const style = clientStyles[key] || {
-              icon: "💼",
-              bg: "bg-muted/50",
-              border: "border-border",
-              badge: "bg-primary text-white",
-            };
+            const badgeStyle =
+              clientBadgeStyles[key] ?? "bg-primary text-white";
+
             return (
               <ScrollAnimationWrapper
                 key={key}
@@ -79,21 +48,34 @@ export async function ClientsSection() {
                 delay={index * 0.08}
                 threshold={0.15}
               >
-                <div className={`${style.bg} border-2 ${style.border} rounded-2xl p-7 cursor-default hover:-translate-y-1.5 hover:shadow-[0_12px_32px_rgba(245,168,0,0.12)] transition-all duration-300 flex flex-col h-full`}>
-                  <div className="text-4xl mb-4">{style.icon}</div>
-                  <h3 className="text-xl font-black text-foreground mb-1">
-                    {t(`items.${key}.name`)}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    {t(`items.${key}.sector`)}
-                  </p>
-                  <div className="mt-auto pt-4 flex flex-col gap-2">
-                    <div className={`text-sm font-bold ${style.badge} rounded-xl px-4 py-2 inline-block w-fit`}>
-                      {t(`items.${key}.highlight`)}
-                    </div>
-                    <p className="text-xs text-muted-foreground/80 leading-relaxed mt-1">
-                      {t(`items.${key}.detail`)}
+                <div className="group relative flex min-h-[280px] cursor-default flex-col justify-end overflow-hidden rounded-2xl border-2 border-border transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_12px_32px_rgba(245,168,0,0.12)] md:min-h-[320px]">
+                  <Image
+                    src={CLIENT_IMAGE_BY_KEY[key]}
+                    alt={t(`items.${key}.name`)}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    draggable={false}
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/35 to-black/10" />
+
+                  <div className="relative z-10 flex flex-col p-6 text-white">
+                    <h3 className="mb-1 text-xl font-black">
+                      {t(`items.${key}.name`)}
+                    </h3>
+                    <p className="mb-4 text-sm text-white/75">
+                      {t(`items.${key}.sector`)}
                     </p>
+                    <div className="flex flex-col gap-2">
+                      <div
+                        className={`inline-block w-fit rounded-xl px-4 py-2 text-sm font-bold ${badgeStyle}`}
+                      >
+                        {t(`items.${key}.highlight`)}
+                      </div>
+                      <p className="text-xs leading-relaxed text-white/70">
+                        {t(`items.${key}.detail`)}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </ScrollAnimationWrapper>
@@ -104,5 +86,3 @@ export async function ClientsSection() {
     </section>
   );
 }
-
-
