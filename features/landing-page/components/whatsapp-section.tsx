@@ -41,15 +41,16 @@ export async function WhatsAppSection() {
           </div>
         </ScrollAnimationWrapper>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid items-stretch gap-8 md:grid-cols-3">
           {conversations.map((conversation, index) => (
             <ScrollAnimationWrapper
               key={conversation.clientName}
               type="fade-up"
               delay={index * 0.1}
               threshold={0.15}
+              className="h-full"
             >
-              <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
+              <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
                 <div className="flex items-center gap-3 bg-[#075E54] px-5 py-4 text-white">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm font-bold">
                     {conversation.clientName.charAt(0)}
@@ -60,7 +61,7 @@ export async function WhatsAppSection() {
                   </div>
                 </div>
 
-                <div className="space-y-3 bg-[#ECE5DD] p-4">
+                <div className="flex flex-1 flex-col space-y-3 bg-[#ECE5DD] p-4">
                   {conversation.messages.map((message, idx) => (
                     <div
                       key={`${conversation.clientName}-${idx}`}
