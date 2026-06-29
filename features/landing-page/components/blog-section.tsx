@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { BLOG_KEYS } from "../lib/constants";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
 import type { LocaleProps } from "../types";
@@ -47,9 +48,15 @@ export async function BlogSection({ direction }: LocaleProps) {
                 {t("title")}
               </h2>
             </div>
-            <Button variant="outline" className="shrink-0 rounded-full font-bold">
-              {t("cta")}
-              <CtaArrow className="ms-2" size={16} />
+            <Button
+              variant="outline"
+              className="shrink-0 rounded-full font-bold"
+              asChild
+            >
+              <Link href="/articles">
+                {t("cta")}
+                <CtaArrow className="ms-2" size={16} />
+              </Link>
             </Button>
           </div>
         </ScrollAnimationWrapper>
