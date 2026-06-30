@@ -1,5 +1,9 @@
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getLocale } from "next-intl/server";
 import { getDirection } from "@/i18n/locale";
+import { getQueryClient } from "@/lib/get-query-client";
+import { getHeroContent } from "../lib/cms";
+import { landingCmsKeys } from "../lib/query-keys";
 import { AboutSection } from "./about-section";
 import { BlogSection } from "./blog-section";
 import { ClientsSection } from "./clients-section";
@@ -18,24 +22,29 @@ export async function LandingPage() {
   const locale = (await getLocale()) as AppLocale;
   const direction = getDirection(locale);
   const localeProps = { locale, direction };
-  return (
-    <div
-      className="landing-page min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground"
-    >
-      <CustomCursor />
-      <HeroSection {...localeProps} />
-      <WhatsAppSection />
-      <AboutSection {...localeProps} />
-      <ServicesSection />
-      <PortfolioSection {...localeProps} />
-      <ClientsSection />
-      <StatsSection />
-      <ProcessSection />
-      <BlogSection {...localeProps} />
-      <ContactSection />
+  const queryClient = getQueryClient();
 
-      <Footer />
-    </div>
+  await queryClient.prefetchQuery({
+    queryKey: landingCmsKeys.hero(locale),
+    queryFn: () => getHeroContent(locale),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="landing-page min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
+        <CustomCursor />
+        <HeroSection {...localeProps} />
+        <WhatsAppSection locale={locale} />
+        <AboutSection {...localeProps} />
+        <ServicesSection />
+        <PortfolioSection {...localeProps} />
+        <ClientsSection />
+        <StatsSection />
+        <ProcessSection />
+        <BlogSection {...localeProps} />
+        <ContactSection />
+        <Footer />
+      </div>
+    </HydrationBoundary>
   );
 }
-
