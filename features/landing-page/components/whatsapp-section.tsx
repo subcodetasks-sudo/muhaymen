@@ -1,7 +1,12 @@
-import { getTranslations } from "next-intl/server";
-import { WHATSAPP_KEYS } from "../lib/constants";
-import type { WhatsAppConversation } from "../types";
+"use client";
+
+import { ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useHeroContent } from "../hooks/use-hero-content";
+import type { AppLocale, CmsImage } from "../types";
 
 function WhatsAppIcon() {
   return (
@@ -16,12 +21,100 @@ function WhatsAppIcon() {
   );
 }
 
-export async function WhatsAppSection() {
-  const t = await getTranslations("LandingPage.whatsapp");
+function parseClientName(alt: string): string {
+  const separator = alt.includes("|") ? "|" : "—";
+  const parts = alt.split(separator).map((part) => part.trim());
+  return parts[parts.length - 1] || alt;
+}
 
-  const conversations = WHATSAPP_KEYS.map(
-    (key) => t.raw(`conversations.${key}`) as WhatsAppConversation,
+const carouselRowClassName =
+  "-mx-6 flex gap-8 overflow-x-auto pb-2 px-6 max-md:snap-x max-md:snap-mandatory max-md:scroll-smooth max-md:px-[calc(50vw-min(42.5vw,160px))]";
+
+const carouselItemClassName =
+  "w-[min(85vw,320px)] shrink-0 max-md:snap-center";
+
+function WhatsAppChatCard({
+  image,
+  onlineLabel,
+}: {
+  image: CmsImage;
+  onlineLabel: string;
+}) {
+  const clientName = parseClientName(image.alt);
+
+  return (
+    <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
+      <div className="flex items-center gap-3 bg-[#075E54] px-5 py-4 text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold">
+          {clientName.charAt(0)}
+        </div>
+        <div className="min-w-0">
+          <div className="truncate font-bold">{clientName}</div>
+          <div className="text-xs text-green-200">{onlineLabel}</div>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col bg-[#ECE5DD]">
+        {image.url ? (
+          <Image
+            src={image.url}
+            alt={image.alt}
+            width={400}
+            height={700}
+            unoptimized
+            className="h-auto w-full object-cover object-top"
+          />
+        ) : (
+          <div className="flex aspect-9/16 flex-1 flex-col items-center justify-center gap-3 bg-[#ECE5DD] p-6 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/80 shadow-sm">
+              <ImageIcon className="h-8 w-8 text-muted-foreground" aria-hidden />
+            </div>
+            <p className="text-sm text-muted-foreground">{image.alt}</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
+}
+
+function WhatsAppSectionSkeleton() {
+  return (
+    <section className="px-6 py-24" aria-busy>
+      <div className="container mx-auto max-w-6xl">
+        <div className="mb-16 flex flex-col items-center gap-4">
+          <Skeleton className="h-9 w-52 rounded-full" />
+          <Skeleton className="h-12 w-full max-w-lg rounded-2xl" />
+          <Skeleton className="h-6 w-full max-w-2xl rounded-xl" />
+        </div>
+
+        <div className={carouselRowClassName}>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className={`flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg ${carouselItemClassName}`}
+            >
+              <Skeleton className="h-18 w-full rounded-none" />
+              <Skeleton className="aspect-9/16 w-full rounded-none" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type WhatsAppSectionProps = {
+  locale: AppLocale;
+};
+
+export function WhatsAppSection({ locale }: WhatsAppSectionProps) {
+  const t = useTranslations("LandingPage.whatsapp");
+  const { data: content, isPending } = useHeroContent(locale);
+  const section = content?.section;
+
+  if (isPending || !section) {
+    return <WhatsAppSectionSkeleton />;
+  }
 
   return (
     <section className="px-6 py-24">
@@ -30,58 +123,31 @@ export async function WhatsAppSection() {
           <div className="mb-16 text-center">
             <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700">
               <WhatsAppIcon />
-              {t("badge")}
+              <span
+                className="[&_p]:inline"
+                dangerouslySetInnerHTML={{ __html: section.content }}
+              />
             </span>
             <h2 className="mb-4 text-4xl font-black text-foreground md:text-5xl">
-              {t("title")}
+              {section.title}
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-              {t("subtitle")}
-            </p>
+            <div
+              className="mx-auto max-w-2xl text-lg text-muted-foreground [&_p]:contents"
+              dangerouslySetInnerHTML={{ __html: section.description }}
+            />
           </div>
         </ScrollAnimationWrapper>
 
-        <div className="grid items-stretch gap-8 md:grid-cols-3">
-          {conversations.map((conversation, index) => (
+        <div className={carouselRowClassName}>
+          {section.images.map((image, index) => (
             <ScrollAnimationWrapper
-              key={conversation.clientName}
+              key={image.alt}
               type="fade-up"
               delay={index * 0.1}
               threshold={0.15}
-              className="h-full"
+              className={carouselItemClassName}
             >
-              <div className="flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
-                <div className="flex items-center gap-3 bg-[#075E54] px-5 py-4 text-white">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-sm font-bold">
-                    {conversation.clientName.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-bold">{conversation.clientName}</div>
-                    <div className="text-xs text-green-200">{t("online")}</div>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col space-y-3 bg-[#ECE5DD] p-4">
-                  {conversation.messages.map((message, idx) => (
-                    <div
-                      key={`${conversation.clientName}-${idx}`}
-                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                        message.sender === "client"
-                          ? "ms-auto rounded-te-sm bg-white text-foreground shadow-sm"
-                          : "rounded-ts-sm bg-[#DCF8C6] text-foreground"
-                      }`}
-                    >
-                      {message.text}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 border-t border-border bg-white px-4 py-3">
-                  <div className="flex-1 rounded-full bg-muted px-4 py-2 text-sm text-muted-foreground">
-                    {t("inputPlaceholder")}
-                  </div>
-                </div>
-              </div>
+              <WhatsAppChatCard image={image} onlineLabel={t("online")} />
             </ScrollAnimationWrapper>
           ))}
         </div>
@@ -89,4 +155,3 @@ export async function WhatsAppSection() {
     </section>
   );
 }
-
