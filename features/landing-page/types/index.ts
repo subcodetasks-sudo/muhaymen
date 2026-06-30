@@ -66,3 +66,39 @@ export type LocaleProps = {
   locale: AppLocale;
   direction: TextDirection;
 };
+
+export type CmsImage = {
+  url: string | null;
+  alt: string;
+};
+
+export type CmsSeo = {
+  title: string;
+  description: string;
+};
+
+export type HeroWhatsAppSection = {
+  title: string;
+  description: string;
+  content: string;
+  images: CmsImage[];
+};
+
+export type HeroContent = {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  seo: CmsSeo;
+  image: CmsImage;
+  section: HeroWhatsAppSection;
+  sortOrder: number;
+};
+
+export type ApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
+
+export type HeroContentResponse = ApiResponse<HeroContent>;
