@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { Toaster } from "sonner";
 import Providers from "@/app/providers";
 import { LocaleDirectionSync } from "@/components/locale-direction-sync";
+import { PageLoading } from "@/components/page-loading";
 import { DirectionProvider } from "@/components/ui/direction";
 import { Navbar } from "@/features/landing-page/components/navbar";
 import { getDirection } from "@/i18n/locale";
@@ -19,13 +20,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-function LocaleLayoutFallback({ children }: { children: React.ReactNode }) {
+function LocaleLayoutFallback() {
   const locale = routing.defaultLocale;
   const direction = getDirection(locale);
 
   return (
     <html lang={locale} dir={direction} className={fontClassName}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <PageLoading />
+      </body>
     </html>
   );
 }
@@ -38,7 +41,7 @@ export default function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   return (
-    <Suspense fallback={<LocaleLayoutFallback>{children}</LocaleLayoutFallback>}>
+    <Suspense fallback={<LocaleLayoutFallback />}>
       <LocaleLayoutContent params={params}>{children}</LocaleLayoutContent>
     </Suspense>
   );
@@ -66,7 +69,7 @@ async function LocaleLayoutContent({
 
   return (
     <html lang={locale} dir={direction} className={fontClassName}>
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-dvh flex-col">
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <NextIntlClientProvider locale={locale} messages={messages}>
