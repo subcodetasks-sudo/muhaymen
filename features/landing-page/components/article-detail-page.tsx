@@ -1,9 +1,18 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
+import { getArticleSeoText } from "../lib/article-cms";
 import type { AppLocale, ArticleDetail } from "../types";
 import { Footer } from "./footer";
 
@@ -11,21 +20,47 @@ type ArticleDetailPageProps = {
   locale: AppLocale;
   article: ArticleDetail;
   backLabel: string;
+  articlesLabel: string;
 };
 
 export function ArticleDetailPage({
   locale,
   article,
   backLabel,
+  articlesLabel,
 }: ArticleDetailPageProps) {
   const direction = getDirection(locale);
   const isRtl = direction === "rtl";
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
+  const PathSeparator = isRtl ? ChevronLeft : ChevronRight;
+  const { title: articleTitle } = getArticleSeoText(article);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
       <main className="px-6 pb-24 pt-28">
         <div className="container mx-auto max-w-6xl">
+          <ScrollAnimationWrapper type="fade-up" threshold={0.2}>
+            <Breadcrumb className="mb-6">
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/articles" className="font-medium">
+                      {articlesLabel}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                  <PathSeparator />
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="max-w-[min(100%,28rem)] truncate font-medium">
+                    {articleTitle}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </ScrollAnimationWrapper>
+
           <ScrollAnimationWrapper type="fade-up" threshold={0.2}>
             <Button
               variant="ghost"

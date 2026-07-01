@@ -86,6 +86,7 @@ export default async function Page({ params }: PageProps) {
         locale={appLocale}
         article={article}
         backLabel={t("backToArticles")}
+        articlesLabel={t("fallbackTitle")}
       />
     </>
   );
