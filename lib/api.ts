@@ -139,6 +139,10 @@ export async function fetchApi<T>(
   const { locale, ...fetchOptions } = options;
   const headers = new Headers(fetchOptions.headers);
 
+  if (!headers.has("Accept")) {
+    headers.set("Accept", "application/json");
+  }
+
   if (locale) {
     headers.set("Accept-Language", locale);
   }
