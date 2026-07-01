@@ -180,7 +180,25 @@
       "successDescription": "سنتواصل معك في أقرب وقت ممكن."
     },
     "footer": {
-      "copyright": "جميع الحقوق محفوظة — وكالة مهيمن للتسويق."
+      "copyright": "جميع الحقوق محفوظة — {appName}.",
+      "contactLabel": "تواصل معنا",
+      "platformsLabel": "تابعنا",
+      "fallbackAppName": "وكالة مهيمن للتسويق"
     }
+  },
+  "WorkPage": {
+    "backToPortfolio": "العودة إلى أعمالنا",
+    "fallbackTitle": "أعمالنا",
+    "fallbackDescription": "استعرض أعمالنا ومشاريعنا الناجحة."
+  },
+  "ArticlePage": {
+    "backToArticles": "العودة إلى المقالات",
+    "fallbackTitle": "المقالات",
+    "fallbackDescription": "اقرأ أحدث مقالاتنا ونصائحنا الاحترافية."
+  },
+  "ArticlesPage": {
+    "backToBlog": "العودة للرئيسية",
+    "fallbackTitle": "المقالات",
+    "fallbackDescription": "اقرأ أحدث مقالاتنا ونصائحنا الاحترافية."
   }
 }

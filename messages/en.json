@@ -180,7 +180,25 @@
       "successDescription": "We will contact you as soon as possible."
     },
     "footer": {
-      "copyright": "All rights reserved — Muhaymin Marketing Agency."
+      "copyright": "All rights reserved — {appName}.",
+      "contactLabel": "Contact us",
+      "platformsLabel": "Follow us",
+      "fallbackAppName": "Muhaymin Marketing Agency"
     }
+  },
+  "WorkPage": {
+    "backToPortfolio": "Back to portfolio",
+    "fallbackTitle": "Our work",
+    "fallbackDescription": "Explore our portfolio of successful projects."
+  },
+  "ArticlePage": {
+    "backToArticles": "Back to articles",
+    "fallbackTitle": "Articles",
+    "fallbackDescription": "Read our latest articles and insights."
+  },
+  "ArticlesPage": {
+    "backToBlog": "Back to home",
+    "fallbackTitle": "Articles",
+    "fallbackDescription": "Read our latest articles and insights."
   }
 }
