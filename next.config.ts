@@ -5,6 +5,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const siteHostname = siteUrl ? new URL(siteUrl).hostname : undefined;
 
 const nextConfig: NextConfig = {
+  cacheComponents:true,
   images: siteHostname
     ? {
         remotePatterns: [
