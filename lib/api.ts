@@ -176,5 +176,11 @@ async function parseResponseBody(response: Response): Promise<unknown> {
     return response.json();
   }
 
+  if (contentType?.includes("text/html")) {
+    throw new Error(
+      "Expected JSON response, but received HTML content. The API endpoint might be misconfigured, offline, or returning a default hosting/Laravel welcome page."
+    );
+  }
+
   return response.text();
 }
