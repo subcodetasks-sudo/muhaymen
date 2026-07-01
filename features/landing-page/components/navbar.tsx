@@ -9,10 +9,13 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { Link, usePathname } from "@/i18n/navigation";
+import { getAppName } from "@/lib/settings";
+import type { AppLocale } from "../types";
 import { LanguageToggle } from "./language-toggle";
 import { LOGO_PATH, NAV_SECTION_IDS } from "../lib/constants";
 import { scrollToSection } from "../lib/scroll-to-section";
@@ -61,6 +64,13 @@ const mobileMenuItemVariants = {
 
 export function Navbar() {
   const t = useTranslations("LandingPage.nav");
+  const locale = useLocale() as AppLocale;
+  const { data: settings } = useAppSettings();
+  const logoAlt = settings
+    ? `${getAppName(settings, locale)} Logo`
+    : "Muhaymin Logo";
+  const logoSrc = settings?.logo || LOGO_PATH;
+  const isRemoteLogo = logoSrc.startsWith("http");
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [isOpen, setIsOpen] = useState(false);
@@ -184,11 +194,12 @@ export function Navbar() {
           >
             <motion.div style={{ height: logoHeight }} className="relative w-auto">
               <Image
-                src={LOGO_PATH}
-                alt="Muhaymin Logo"
+                src={logoSrc}
+                alt={logoAlt}
                 width={120}
                 height={48}
                 className="h-full w-auto"
+                unoptimized={isRemoteLogo}
                 priority
               />
             </motion.div>
@@ -201,11 +212,12 @@ export function Navbar() {
           >
             <motion.div style={{ height: logoHeight }} className="relative w-auto">
               <Image
-                src={LOGO_PATH}
-                alt="Muhaymin Logo"
+                src={logoSrc}
+                alt={logoAlt}
                 width={120}
                 height={48}
                 className="h-full w-auto"
+                unoptimized={isRemoteLogo}
                 priority
               />
             </motion.div>

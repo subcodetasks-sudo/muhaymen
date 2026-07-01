@@ -28,7 +28,7 @@ function parseClientName(alt: string): string {
 }
 
 const carouselRowClassName =
-  "-mx-6 flex gap-8 overflow-x-auto pb-2 px-6 max-md:snap-x max-md:snap-mandatory max-md:scroll-smooth max-md:px-[calc(50vw-min(42.5vw,160px))]";
+  "-mx-6 flex gap-8 overflow-x-auto pb-2 px-6 max-md:snap-x max-md:snap-mandatory max-md:scroll-smooth max-md:px-[calc(50vw-min(42.5vw,160px))] overflow-y-hidden";
 
 const carouselItemClassName =
   "w-[min(85vw,320px)] shrink-0 max-md:snap-center";

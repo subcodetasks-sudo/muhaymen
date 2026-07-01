@@ -2,7 +2,13 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getLocale } from "next-intl/server";
 import { getDirection } from "@/i18n/locale";
 import { getQueryClient } from "@/lib/get-query-client";
-import { getHeroContent } from "../lib/cms";
+import {
+  getAboutContent,
+  getClientsContent,
+  getHeroContent,
+  getMethodologyContent,
+  getServicesContent,
+} from "../lib/cms";
 import { landingCmsKeys } from "../lib/query-keys";
 import { AboutSection } from "./about-section";
 import { BlogSection } from "./blog-section";
@@ -24,10 +30,19 @@ export async function LandingPage() {
   const localeProps = { locale, direction };
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: landingCmsKeys.hero(locale),
-    queryFn: () => getHeroContent(locale),
-  });
+  const [aboutContent, clientsContent, methodologyContent] = await Promise.all([
+    getAboutContent(locale),
+    getClientsContent(locale),
+    getMethodologyContent(locale),
+    queryClient.prefetchQuery({
+      queryKey: landingCmsKeys.hero(locale),
+      queryFn: () => getHeroContent(locale),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: landingCmsKeys.services(locale),
+      queryFn: () => getServicesContent(locale),
+    }),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
@@ -35,12 +50,12 @@ export async function LandingPage() {
         <CustomCursor />
         <HeroSection {...localeProps} />
         <WhatsAppSection locale={locale} />
-        <AboutSection {...localeProps} />
-        <ServicesSection />
+        <AboutSection {...localeProps} content={aboutContent} />
+        <ServicesSection locale={locale} />
         <PortfolioSection {...localeProps} />
-        <ClientsSection />
+        <ClientsSection content={clientsContent} locale={locale} />
         <StatsSection />
-        <ProcessSection />
+        <ProcessSection content={methodologyContent} />
         <BlogSection {...localeProps} />
         <ContactSection />
         <Footer />
@@ -48,3 +63,4 @@ export async function LandingPage() {
     </HydrationBoundary>
   );
 }
+

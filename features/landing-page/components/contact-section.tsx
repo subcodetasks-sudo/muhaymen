@@ -8,25 +8,57 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
+import { useParams } from "next/navigation";
+import { fetchApi } from "@/lib/api";
+import { useAppSettings } from "@/hooks/use-app-settings";
+
 
 export function ContactSection() {
   const t = useTranslations("LandingPage.contact");
   const site = useTranslations("LandingPage.site");
+  const { data: settings } = useAppSettings();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const email = settings?.contact_email || site("email");
+  const phone = settings?.contact_phone || site("phone");
+  const params = useParams();
+  const locale = (params?.locale as string) || "ar";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isSubmitting) return;
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const name = formData.get("name") as string;
+    const emailVal = formData.get("email") as string;
+    const message = formData.get("message") as string;
 
-    toast.success(t("successTitle"), {
-      description: t("successDescription"),
-    });
+    try {
+      const response = await fetchApi<{ success: boolean; message: string }>("/footer/contact", {
+        method: "POST",
+        locale,
+        body: JSON.stringify({
+          name,
+          email: emailVal,
+          message,
+        }),
+      });
 
-    event.currentTarget.reset();
-    setIsSubmitting(false);
+      if (response && response.success) {
+        toast.success(response.message || t("successTitle"));
+        form.reset();
+      } else {
+        toast.error(response?.message || "حدث خطأ ما");
+      }
+    } catch (error) {
+      const apiError = error as { body?: { message?: string }; message?: string };
+      toast.error(apiError?.body?.message || apiError?.message || "حدث خطأ ما");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <section id="contact" className="relative overflow-hidden px-6 py-24">
@@ -52,7 +84,7 @@ export function ContactSection() {
                     <div className="mb-1 text-sm text-muted-foreground">
                       {t("emailLabel")}
                     </div>
-                    <div className="font-bold text-card-foreground">{site("email")}</div>
+                    <div className="font-bold text-card-foreground">{email}</div>
                   </div>
                 </div>
 
@@ -65,7 +97,7 @@ export function ContactSection() {
                       {t("phoneLabel")}
                     </div>
                     <div className="font-bold text-card-foreground" dir="ltr">
-                      {site("phone")}
+                      {phone}
                     </div>
                   </div>
                 </div>

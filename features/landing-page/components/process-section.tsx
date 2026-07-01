@@ -6,16 +6,10 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useTranslations } from "next-intl";
 import { useRef } from "react";
-import {
-  PROCESS_STEP_CONFIG,
-  PROCESS_STEP_KEYS,
-} from "../lib/constants";
 import { cn } from "@/lib/utils";
+import type { MethodologyContent, CmsMethodologyStep } from "../types";
 
-const STEP_COUNT = PROCESS_STEP_KEYS.length;
-const SCROLL_HEIGHT = `${STEP_COUNT * 100}vh`;
 const SECTION_GRADIENT =
   "linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #fde68a22 100%)";
 
@@ -57,19 +51,18 @@ function getBarGrowRange(index: number, stepCount: number) {
 }
 
 function ProcessStepSlide({
-  stepKey,
+  step,
   index,
+  stepCount,
   scrollYProgress,
-  t,
 }: {
-  stepKey: (typeof PROCESS_STEP_KEYS)[number];
+  step: CmsMethodologyStep;
   index: number;
+  stepCount: number;
   scrollYProgress: MotionValue<number>;
-  t: ReturnType<typeof useTranslations>;
 }) {
-  const config = PROCESS_STEP_CONFIG[stepKey];
-  const isCrown = config.crown ?? false;
-  const { input, output } = getStepVisibilityRange(index, STEP_COUNT);
+  const isCrown = index === stepCount - 1;
+  const { input, output } = getStepVisibilityRange(index, stepCount);
 
   const opacity = useTransform(scrollYProgress, input, output);
   const y = useTransform(scrollYProgress, input, output.map((v) => (1 - v) * 40));
@@ -84,24 +77,17 @@ function ProcessStepSlide({
         className={cn(
           "relative w-full max-w-3xl rounded-3xl border-2 p-6 shadow-xl sm:p-8",
           isCrown
-            ? "border-primary bg-primary shadow-primary/30"
-            : "border-primary/20 bg-white dark:bg-card",
+            ? "border-primary bg-primary shadow-primary/30 text-white"
+            : "border-primary/20 bg-white dark:bg-card text-foreground",
         )}
       >
-        {isCrown && (
-          <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-foreground px-4 py-1.5 text-xs font-black text-background shadow-lg">
-            {t("summit")}
-          </div>
-        )}
-
         <div
           className={cn(
             "pointer-events-none absolute inset-e-6 top-5 select-none text-6xl font-black leading-none sm:text-8xl",
             isCrown ? "text-white/15" : "text-primary/8",
           )}
-        >
-          {stepKey}
-        </div>
+          dangerouslySetInnerHTML={{ __html: step.name }}
+        />
 
         <div className="relative z-10 max-w-2xl">
           <div
@@ -109,25 +95,19 @@ function ProcessStepSlide({
               "mb-3 inline-block rounded-full px-3 py-1 text-sm font-bold",
               isCrown ? "bg-white/20 text-white" : "bg-primary/10 text-primary",
             )}
-          >
-            {t("stepLabel", { num: stepKey })}
-          </div>
+            dangerouslySetInnerHTML={{ __html: step.name }}
+          />
           <h3
-            className={cn(
-              "mb-2 text-xl font-black leading-tight sm:mb-3 sm:text-2xl",
-              isCrown ? "text-white" : "text-foreground",
-            )}
-          >
-            {t(`steps.${stepKey}.title`)}
-          </h3>
-          <p
+            className="mb-2 text-xl font-black leading-tight sm:mb-3 sm:text-2xl"
+            dangerouslySetInnerHTML={{ __html: step.title }}
+          />
+          <div
             className={cn(
               "text-sm leading-relaxed sm:text-base",
               isCrown ? "text-white/85" : "text-muted-foreground",
             )}
-          >
-            {t(`steps.${stepKey}.mobileDescription`)}
-          </p>
+            dangerouslySetInnerHTML={{ __html: step.description }}
+          />
         </div>
       </div>
     </motion.div>
@@ -136,12 +116,14 @@ function ProcessStepSlide({
 
 function ProcessStepDot({
   index,
+  stepCount,
   scrollYProgress,
 }: {
   index: number;
+  stepCount: number;
   scrollYProgress: MotionValue<number>;
 }) {
-  const segment = 1 / STEP_COUNT;
+  const segment = 1 / stepCount;
   const start = index * segment;
   const end = (index + 1) * segment;
   const scale = useTransform(scrollYProgress, [start, end], [1, 1.35]);
@@ -156,29 +138,24 @@ function ProcessStepDot({
 }
 
 function ProcessBarColumn({
-  stepKey,
+  step,
   index,
+  stepCount,
   scrollYProgress,
-  t,
 }: {
-  stepKey: (typeof PROCESS_STEP_KEYS)[number];
+  step: CmsMethodologyStep;
   index: number;
+  stepCount: number;
   scrollYProgress: MotionValue<number>;
-  t: ReturnType<typeof useTranslations>;
 }) {
-  const config = PROCESS_STEP_CONFIG[stepKey];
-  const isCrown = config.crown ?? false;
-  const { input, output } = getBarGrowRange(index, STEP_COUNT);
+  const isCrown = index === stepCount - 1;
+  const { input, output } = getBarGrowRange(index, stepCount);
 
   const scaleY = useTransform(scrollYProgress, input, output);
+  const heightClass = index === 0 ? "h-[250px]" : index === 1 ? "h-[290px]" : index === 2 ? "h-[330px]" : index === 3 ? "h-[380px]" : "h-[440px]";
 
   return (
-    <div
-      className={cn(
-        "group relative min-w-0 flex-1",
-        config.height,
-      )}
-    >
+    <div className={cn("group relative min-w-0 flex-1", heightClass)}>
       <motion.div
         className="h-full w-full"
         style={{ scaleY, transformOrigin: "bottom" }}
@@ -188,24 +165,17 @@ function ProcessBarColumn({
             className={cn(
               "absolute inset-0 flex flex-col justify-end rounded-t-2xl border-2 p-5 transition-colors duration-300",
               isCrown
-                ? "border-primary bg-primary shadow-2xl shadow-primary/40"
-                : "border-primary/20 bg-white group-hover:border-primary/60 dark:bg-card",
+                ? "border-primary bg-primary shadow-2xl shadow-primary/40 text-white"
+                : "border-primary/20 bg-white group-hover:border-primary/60 dark:bg-card text-foreground",
             )}
           >
-            {isCrown && (
-              <div className="absolute -top-4 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-foreground px-4 py-1.5 text-xs font-black text-background shadow-lg">
-                {t("summit")}
-              </div>
-            )}
-
             <div
               className={cn(
                 "pointer-events-none absolute inset-x-5 top-5 select-none text-7xl font-black leading-none",
                 isCrown ? "text-white/20" : "text-primary/8",
               )}
-            >
-              {stepKey}
-            </div>
+              dangerouslySetInnerHTML={{ __html: step.name }}
+            />
 
             <div className="relative z-10 min-w-0">
               <div
@@ -215,25 +185,19 @@ function ProcessBarColumn({
                     ? "bg-white/20 text-white"
                     : "bg-primary/10 text-primary",
                 )}
-              >
-                {t("stepLabel", { num: stepKey })}
-              </div>
+                dangerouslySetInnerHTML={{ __html: step.name }}
+              />
               <h3
-                className={cn(
-                  "mb-2 wrap-break-word text-base font-black leading-snug",
-                  isCrown ? "text-white" : "text-foreground",
-                )}
-              >
-                {t(`steps.${stepKey}.title`)}
-              </h3>
-              <p
+                className="mb-2 wrap-break-word text-base font-black leading-snug"
+                dangerouslySetInnerHTML={{ __html: step.title }}
+              />
+              <div
                 className={cn(
                   "wrap-break-word text-xs leading-relaxed",
                   isCrown ? "text-white/80" : "text-muted-foreground",
                 )}
-              >
-                {t(`steps.${stepKey}.description`)}
-              </p>
+                dangerouslySetInnerHTML={{ __html: step.description }}
+              />
             </div>
           </div>
         </div>
@@ -242,9 +206,10 @@ function ProcessBarColumn({
   );
 }
 
-function ProcessStickySection() {
-  const t = useTranslations("LandingPage.process");
+function ProcessStickySection({ content }: { content: MethodologyContent }) {
   const containerRef = useRef<HTMLElement>(null);
+  const stepCount = content.steps.length;
+  const scrollHeight = `${stepCount * 100}vh`;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -257,7 +222,7 @@ function ProcessStickySection() {
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: SCROLL_HEIGHT }}
+      style={{ height: scrollHeight }}
     >
       <div
         className="sticky top-0 flex h-svh flex-col px-4 sm:px-6"
@@ -265,26 +230,20 @@ function ProcessStickySection() {
       >
         <div className="container mx-auto flex h-full max-w-6xl flex-col">
           <div className="shrink-0 pt-14 pb-4 text-center sm:pt-16 sm:pb-6 lg:pt-16 lg:pb-8">
-            <span className="mb-3 inline-block rounded-full bg-primary/15 px-4 py-1.5 text-xs font-black tracking-wider text-primary sm:mb-4 sm:px-5 sm:py-2 sm:text-sm">
-              {t("badge")}
-            </span>
-            <h2 className="mb-2 text-3xl font-black text-foreground sm:mb-3 sm:text-4xl lg:text-5xl">
-              {t("title")}
-            </h2>
-            <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-              {t("subtitle")}
-            </p>
+            <span className="mb-3 inline-block rounded-full bg-primary/15 px-4 py-1.5 text-xs font-black tracking-wider text-primary sm:mb-4 sm:px-5 sm:py-2 sm:text-sm" dangerouslySetInnerHTML={{ __html: content.title }} />
+            <h2 className="mb-2 text-3xl font-black text-foreground sm:mb-3 sm:text-4xl lg:text-5xl" dangerouslySetInnerHTML={{ __html: content.description }} />
+            <div className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg" dangerouslySetInnerHTML={{ __html: content.content }} />
           </div>
 
           {/* Mobile & tablet: sticky card slides */}
           <div className="relative min-h-0 flex-1 lg:hidden">
-            {PROCESS_STEP_KEYS.map((key, index) => (
+            {content.steps.map((step, index) => (
               <ProcessStepSlide
-                key={key}
-                stepKey={key}
+                key={index}
+                step={step}
                 index={index}
+                stepCount={stepCount}
                 scrollYProgress={scrollYProgress}
-                t={t}
               />
             ))}
           </div>
@@ -292,13 +251,13 @@ function ProcessStickySection() {
           {/* Laptop & desktop: bar chart growing from axis */}
           <div className="hidden min-h-0 flex-1 flex-col justify-end pb-4 lg:flex">
             <div className="relative mb-4 flex items-end gap-3">
-              {PROCESS_STEP_KEYS.map((key, index) => (
+              {content.steps.map((step, index) => (
                 <ProcessBarColumn
-                  key={key}
-                  stepKey={key}
+                  key={index}
+                  step={step}
                   index={index}
+                  stepCount={stepCount}
                   scrollYProgress={scrollYProgress}
-                  t={t}
                 />
               ))}
             </div>
@@ -320,10 +279,11 @@ function ProcessStickySection() {
               />
             </div>
             <div className="flex items-center justify-center gap-3">
-              {PROCESS_STEP_KEYS.map((key, index) => (
+              {content.steps.map((_, index) => (
                 <ProcessStepDot
-                  key={key}
+                  key={index}
                   index={index}
+                  stepCount={stepCount}
                   scrollYProgress={scrollYProgress}
                 />
               ))}
@@ -335,6 +295,11 @@ function ProcessStickySection() {
   );
 }
 
-export function ProcessSection() {
-  return <ProcessStickySection />;
+interface ProcessSectionProps {
+  content: MethodologyContent;
+}
+
+export function ProcessSection({ content }: ProcessSectionProps) {
+  if (!content) return null;
+  return <ProcessStickySection content={content} />;
 }
