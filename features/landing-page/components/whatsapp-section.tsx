@@ -6,7 +6,9 @@ import { useTranslations } from "next-intl";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHeroContent } from "../hooks/use-hero-content";
+import { Marquee } from "@/components/magicui/marquee";
 import type { AppLocale, CmsImage } from "../types";
+
 
 function WhatsAppIcon() {
   return (
@@ -117,8 +119,8 @@ export function WhatsAppSection({ locale }: WhatsAppSectionProps) {
   }
 
   return (
-    <section className="px-6 py-24">
-      <div className="container mx-auto max-w-6xl">
+    <section className="py-24 overflow-hidden">
+      <div className="container mx-auto max-w-6xl px-6">
         <ScrollAnimationWrapper type="fade-up" threshold={0.2}>
           <div className="mb-16 text-center">
             <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700">
@@ -137,20 +139,22 @@ export function WhatsAppSection({ locale }: WhatsAppSectionProps) {
             />
           </div>
         </ScrollAnimationWrapper>
+      </div>
 
-        <div className={carouselRowClassName}>
-          {section.images.map((image, index) => (
-            <ScrollAnimationWrapper
-              key={image.alt}
-              type="fade-up"
-              delay={index * 0.1}
-              threshold={0.15}
-              className={carouselItemClassName}
-            >
-              <WhatsAppChatCard image={image} onlineLabel={t("online")} />
-            </ScrollAnimationWrapper>
-          ))}
-        </div>
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+        <ScrollAnimationWrapper type="fade-up" threshold={0.15} className="w-full">
+          <Marquee pauseOnHover className="[--duration:30s] [--gap:2rem] py-4">
+            {section.images.map((image) => (
+              <div key={image.alt} className="w-[min(85vw,320px)] shrink-0 px-2">
+                <WhatsAppChatCard image={image} onlineLabel={t("online")} />
+              </div>
+            ))}
+          </Marquee>
+        </ScrollAnimationWrapper>
+
+        {/* Left and Right Side Gradients (Fog Effect) */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-gradient-to-r from-background to-transparent z-10 sm:w-1/6" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-gradient-to-l from-background to-transparent z-10 sm:w-1/6" />
       </div>
     </section>
   );
