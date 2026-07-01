@@ -2,6 +2,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 import Providers from "@/app/providers";
 import { LocaleDirectionSync } from "@/components/locale-direction-sync";
@@ -14,7 +15,36 @@ import { getQueryClient } from "@/lib/get-query-client";
 import { settingsKeys } from "@/features/landing-page/lib/query-keys";
 import { getAppSettings } from "@/lib/settings-server";
 
-export default async function LocaleLayout({
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+function LocaleLayoutFallback({ children }: { children: React.ReactNode }) {
+  const locale = routing.defaultLocale;
+  const direction = getDirection(locale);
+
+  return (
+    <html lang={locale} dir={direction} className={fontClassName}>
+      <body className="flex min-h-full flex-col">{children}</body>
+    </html>
+  );
+}
+
+export default function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  return (
+    <Suspense fallback={<LocaleLayoutFallback>{children}</LocaleLayoutFallback>}>
+      <LocaleLayoutContent params={params}>{children}</LocaleLayoutContent>
+    </Suspense>
+  );
+}
+
+async function LocaleLayoutContent({
   children,
   params,
 }: {
