@@ -102,3 +102,194 @@ export type ApiResponse<T> = {
 };
 
 export type HeroContentResponse = ApiResponse<HeroContent>;
+
+export type AboutImage = {
+  url: string | null;
+  text: string;
+};
+
+export type AboutItem = {
+  text: string;
+};
+
+export type AboutContent = {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  seo: CmsSeo;
+  image: AboutImage;
+  items: AboutItem[];
+  sortOrder: number;
+};
+
+export type AboutContentResponse = ApiResponse<AboutContent>;
+
+export type CmsServiceItem = {
+  image: CmsImage | null;
+  title: string;
+  description: string;
+};
+
+export type ServicesContent = {
+  id: number;
+  title: string;
+  description: string;
+  seo: CmsSeo;
+  services: CmsServiceItem[];
+  sortOrder: number;
+};
+
+export type ServicesContentResponse = ApiResponse<ServicesContent>;
+
+export type WorkImage = {
+  url: string | null;
+  text: string;
+};
+
+export type WorkItem = {
+  slug: string;
+  title: string;
+  description: string;
+  image: WorkImage;
+};
+
+export type WorkCategory = {
+  title: string;
+  works: WorkItem[];
+};
+
+export type WorksContent = {
+  id: number;
+  title: string;
+  description: string;
+  seo: CmsSeo;
+  categories: WorkCategory[];
+  sortOrder: number;
+};
+
+export type WorksContentResponse = ApiResponse<WorksContent>;
+
+export type WorkWithCategory = WorkItem & {
+  categoryTitle: string;
+};
+
+export type WorkDetailCategory = {
+  title: string;
+};
+
+export type WorkDetail = {
+  slug: string;
+  title: string;
+  description: string;
+  image: WorkImage;
+  category: WorkDetailCategory;
+};
+
+export type WorkDetailResponse = ApiResponse<WorkDetail>;
+
+export type CmsClientItem = {
+  image: CmsImage | null;
+  title: string;
+  description: string;
+  content: string;
+};
+
+export type CmsStatItem = {
+  value: string;
+  label: string;
+};
+
+export type ClientsContent = {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  seo: CmsSeo;
+  clients: CmsClientItem[];
+  stats: CmsStatItem[];
+  sortOrder: number;
+};
+
+export type ClientsContentResponse = ApiResponse<ClientsContent>;
+
+export type CmsMethodologyStep = {
+  name: string;
+  title: string;
+  description: string;
+};
+
+export type MethodologyContent = {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  seo: CmsSeo;
+  steps: CmsMethodologyStep[];
+  sortOrder: number;
+};
+
+export type MethodologyContentResponse = ApiResponse<MethodologyContent>;
+
+export type ArticleImage = {
+  url: string | null;
+  text: string;
+};
+
+export type ArticleItem = {
+  slug: string;
+  title: string;
+  description: string;
+  image: ArticleImage;
+};
+
+export type ArticleCategory = {
+  title: string;
+  articles: ArticleItem[];
+};
+
+export type ArticlesContent = {
+  id: number;
+  title: string;
+  description: string;
+  seo: CmsSeo;
+  categories: ArticleCategory[];
+  sortOrder: number;
+};
+
+export type ArticlesContentResponse = ApiResponse<ArticlesContent>;
+
+export type ArticleWithCategory = ArticleItem & {
+  categoryTitle: string;
+};
+
+export type ArticleDetailCategory = {
+  title: string;
+};
+
+export type ArticleDetail = {
+  slug: string;
+  title: string;
+  description: string;
+  image: ArticleImage;
+  category: ArticleDetailCategory;
+};
+
+export type ArticleDetailResponse = ApiResponse<ArticleDetail>;
+
+export type FooterPlatform = {
+  name: string;
+  url: string;
+};
+
+export type FooterContent = {
+  id: number;
+  title: string;
+  description: string;
+  companyEmail: string;
+  platforms: FooterPlatform[];
+  sortOrder: number;
+};
+
+export type FooterContentResponse = ApiResponse<FooterContent>;
+
