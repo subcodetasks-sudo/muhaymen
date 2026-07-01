@@ -77,7 +77,7 @@ async function requestApi(
   fetchOptions: Omit<FetchApiOptions, "locale">,
   headers: Headers,
 ): Promise<Response> {
-  const { next: _next, ...requestInit } = fetchOptions;
+  const { ...requestInit } = fetchOptions;
 
   if (typeof window === "undefined" && shouldAllowInsecureTls()) {
     return nodeRequest(url, {
