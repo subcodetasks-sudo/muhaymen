@@ -12,9 +12,19 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { Link, usePathname } from "@/i18n/navigation";
 import { getAppName } from "@/lib/settings";
+import { useServicesContent } from "../hooks/use-services-content";
+import { getServiceSlug } from "../lib/service-cms";
 import type { AppLocale } from "../types";
 import { LanguageToggle } from "./language-toggle";
 import { LOGO_PATH, NAV_SECTION_IDS } from "../lib/constants";
@@ -66,6 +76,7 @@ export function Navbar() {
   const t = useTranslations("LandingPage.nav");
   const locale = useLocale() as AppLocale;
   const { data: settings } = useAppSettings();
+  const { data: servicesContent } = useServicesContent(locale);
   const logoAlt = settings
     ? `${getAppName(settings, locale)} Logo`
     : "Muhaymin Logo";
@@ -107,6 +118,58 @@ export function Navbar() {
   const mobileNavLinkClassName =
     "cursor-pointer border-b border-border/50 py-2 text-end text-lg font-medium transition-colors hover:text-primary";
 
+  const renderServicesDesktopItem = () => {
+    const label = t("services");
+
+    if (!servicesContent?.services.length) {
+      return (
+        <Link key="services" href="/services" className={navLinkClassName}>
+          {label}
+        </Link>
+      );
+    }
+
+    return (
+      <NavigationMenu key="services" viewport={false} className="z-50 flex-none">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="h-auto bg-transparent px-0 py-0 text-sm font-bold hover:bg-transparent focus:bg-transparent data-open:bg-transparent data-open:hover:bg-transparent data-[state=open]:text-primary">
+              {label}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="min-w-72 p-2">
+              <div className="grid gap-1">
+                <NavigationMenuLink asChild>
+                  <Link
+                    href="/services"
+                    className="block rounded-md px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted hover:text-primary"
+                  >
+                    {label}
+                  </Link>
+                </NavigationMenuLink>
+                {servicesContent.services.map((service) => {
+                  const slug = getServiceSlug(service.title);
+                  return (
+                    <NavigationMenuLink key={slug} asChild>
+                      <Link
+                        href={`/services/${slug}`}
+                        className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                      >
+                        <span
+                          className="[&_p]:contents"
+                          dangerouslySetInnerHTML={{ __html: service.title }}
+                        />
+                      </Link>
+                    </NavigationMenuLink>
+                  );
+                })}
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    );
+  };
+
   const renderNavItem = (id: string, className: string, mobile = false) => {
     const label = t(id);
     const href =
@@ -119,6 +182,10 @@ export function Navbar() {
           : (`/#${id}` as const);
 
     if (isHome) {
+      if (id === "services" && !mobile) {
+        return renderServicesDesktopItem();
+      }
+
       if (id === "portfolio" || id === "services" || id === "about") {
         const Component = mobile ? motion.div : "div";
 
@@ -156,6 +223,10 @@ export function Navbar() {
           </Link>
         </motion.div>
       );
+    }
+
+    if (id === "services") {
+      return renderServicesDesktopItem();
     }
 
     return (
