@@ -102,6 +102,7 @@
     "portfolio": {
       "title": "Work we are proud of",
       "subtitle": "A look at some campaigns and projects where we made the difference and achieved dominance.",
+      "cta": "All work",
       "filters": {
         "all": "All",
         "social": "Social media",
@@ -187,11 +188,13 @@
     }
   },
   "WorkPage": {
+    "homeLabel": "Home",
     "backToPortfolio": "Back to portfolio",
     "fallbackTitle": "Our work",
     "fallbackDescription": "Explore our portfolio of successful projects."
   },
   "ArticlePage": {
+    "homeLabel": "Home",
     "backToArticles": "Back to articles",
     "fallbackTitle": "Articles",
     "fallbackDescription": "Read our latest articles and insights."
@@ -200,5 +203,51 @@
     "backToBlog": "Back to home",
     "fallbackTitle": "Articles",
     "fallbackDescription": "Read our latest articles and insights."
+  },
+  "WorksPage": {
+    "backToPortfolio": "Back to home",
+    "fallbackTitle": "Our work",
+    "fallbackDescription": "Explore our portfolio of successful projects."
+  },
+  "ServicesPage": {
+    "backToHome": "Back to home",
+    "fallbackTitle": "Services",
+    "fallbackDescription": "Discover our creative, branding, and digital marketing services.",
+    "eyebrow": "What we build for ambitious brands",
+    "startProject": "Start your project",
+    "seeWork": "See our work",
+    "servicesCountLabel": "Core services",
+    "deliveryLabel": "Delivery style",
+    "deliveryValue": "End-to-end",
+    "focusLabel": "Primary focus",
+    "focusValue": "Strategy, design, and growth",
+    "featuredLabel": "Featured capability",
+    "capabilitiesLabel": "Capabilities",
+    "capabilitiesTitle": "Specialized services, designed to work together",
+    "ctaLabel": "Let's create momentum",
+    "ctaTitle": "Need a tailored service mix for your brand?",
+    "ctaDescription": "Tell us where your brand is now and where you want it to go. We will shape the right creative and marketing stack around your goals.",
+    "ctaAction": "Talk to us"
+  },
+  "AboutPage": {
+    "backToHome": "Back to home",
+    "fallbackTitle": "About us",
+    "fallbackDescription": "Learn more about our team, mindset, and the way we build brands that grow.",
+    "eyebrow": "The people behind the work",
+    "ctaPrimary": "Let's talk",
+    "ctaSecondary": "Explore services",
+    "valuesCountLabel": "Core principles",
+    "approachLabel": "How we work",
+    "approachValue": "Thoughtful and collaborative",
+    "focusLabel": "What we care about",
+    "focusValue": "Clarity, trust, and momentum",
+    "storyLabel": "Our story",
+    "storyTitle": "A strategic creative partner for modern brands",
+    "principlesLabel": "What guides us",
+    "principlesTitle": "The principles we bring into every project",
+    "finalCtaLabel": "Build with us",
+    "finalCtaTitle": "Looking for a team that cares about the work as much as the outcome?",
+    "finalCtaDescription": "We combine strategic thinking, creative execution, and practical collaboration to help brands move with more confidence.",
+    "finalCtaAction": "Start the conversation"
   }
 }

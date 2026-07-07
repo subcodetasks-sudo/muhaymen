@@ -22,6 +22,13 @@ export function getAllWorksWithCategory(
   );
 }
 
+export function getFeaturedWorks(
+  content: WorksContent,
+  limit: number,
+): WorkWithCategory[] {
+  return getAllWorksWithCategory(content).slice(0, limit);
+}
+
 export function getFilteredWorks(
   content: WorksContent,
   activeFilter: WorksFilter,

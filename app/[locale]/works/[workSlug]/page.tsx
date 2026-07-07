@@ -85,7 +85,9 @@ export default async function Page({ params }: PageProps) {
       <WorkDetailPage
         locale={appLocale}
         work={work}
+        homeLabel={t("homeLabel")}
         backLabel={t("backToPortfolio")}
+        worksLabel={t("fallbackTitle")}
       />
     </>
   );

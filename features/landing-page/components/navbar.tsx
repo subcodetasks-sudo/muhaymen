@@ -109,9 +109,31 @@ export function Navbar() {
 
   const renderNavItem = (id: string, className: string, mobile = false) => {
     const label = t(id);
-    const href = `/#${id}` as const;
+    const href =
+      id === "portfolio"
+        ? "/works"
+        : id === "about"
+          ? "/about-us"
+        : id === "services"
+          ? "/services"
+          : (`/#${id}` as const);
 
     if (isHome) {
+      if (id === "portfolio" || id === "services" || id === "about") {
+        const Component = mobile ? motion.div : "div";
+
+        return (
+          <Component
+            key={id}
+            {...(mobile ? { variants: mobileMenuItemVariants } : {})}
+          >
+            <Link href={href} onClick={mobile ? closeMenu : undefined} className={className}>
+              {label}
+            </Link>
+          </Component>
+        );
+      }
+
       const Component = mobile ? motion.button : "button";
       return (
         <Component

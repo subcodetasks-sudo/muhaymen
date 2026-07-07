@@ -102,6 +102,7 @@
     "portfolio": {
       "title": "أعمال نفتخر بها",
       "subtitle": "نظرة على بعض الحملات والمشاريع التي صنعنا فيها الفارق وحققنا الهيمنة.",
+      "cta": "كل الأعمال",
       "filters": {
         "all": "الكل",
         "social": "سوشيال ميديا",
@@ -187,11 +188,13 @@
     }
   },
   "WorkPage": {
+    "homeLabel": "الرئيسية",
     "backToPortfolio": "العودة إلى أعمالنا",
     "fallbackTitle": "أعمالنا",
     "fallbackDescription": "استعرض أعمالنا ومشاريعنا الناجحة."
   },
   "ArticlePage": {
+    "homeLabel": "الرئيسية",
     "backToArticles": "العودة إلى المقالات",
     "fallbackTitle": "المقالات",
     "fallbackDescription": "اقرأ أحدث مقالاتنا ونصائحنا الاحترافية."
@@ -200,5 +203,51 @@
     "backToBlog": "العودة للرئيسية",
     "fallbackTitle": "المقالات",
     "fallbackDescription": "اقرأ أحدث مقالاتنا ونصائحنا الاحترافية."
+  },
+  "WorksPage": {
+    "backToPortfolio": "العودة للرئيسية",
+    "fallbackTitle": "أعمالنا",
+    "fallbackDescription": "استعرض أعمالنا ومشاريعنا الناجحة."
+  },
+  "ServicesPage": {
+    "backToHome": "العودة للرئيسية",
+    "fallbackTitle": "خدماتنا",
+    "fallbackDescription": "اكتشف خدماتنا في الإبداع، الهوية، والتسويق الرقمي.",
+    "eyebrow": "ما الذي نقدمه للعلامات الطموحة",
+    "startProject": "ابدأ مشروعك",
+    "seeWork": "شاهد أعمالنا",
+    "servicesCountLabel": "الخدمات الأساسية",
+    "deliveryLabel": "أسلوب التنفيذ",
+    "deliveryValue": "من البداية للنهاية",
+    "focusLabel": "محور العمل",
+    "focusValue": "الاستراتيجية، التصميم، والنمو",
+    "featuredLabel": "خدمة مميزة",
+    "capabilitiesLabel": "الخدمات",
+    "capabilitiesTitle": "خدمات متخصصة صُممت لتعمل معًا",
+    "ctaLabel": "لنصنع زخمًا",
+    "ctaTitle": "تحتاج مزيج خدمات مناسب لعلامتك؟",
+    "ctaDescription": "أخبرنا أين تقف علامتك اليوم وإلى أين تريد الوصول، وسنصمم لك منظومة إبداعية وتسويقية تناسب أهدافك.",
+    "ctaAction": "تواصل معنا"
+  },
+  "AboutPage": {
+    "backToHome": "العودة للرئيسية",
+    "fallbackTitle": "من نحن",
+    "fallbackDescription": "تعرّف أكثر على فريقنا، وطريقتنا في التفكير، وكيف نبني علامات تنمو بثبات.",
+    "eyebrow": "الأشخاص وراء هذا العمل",
+    "ctaPrimary": "لنتحدث",
+    "ctaSecondary": "استكشف الخدمات",
+    "valuesCountLabel": "المبادئ الأساسية",
+    "approachLabel": "أسلوب عملنا",
+    "approachValue": "تفكير عميق وتعاون فعّال",
+    "focusLabel": "ما نهتم به",
+    "focusValue": "الوضوح، الثقة، والزخم",
+    "storyLabel": "قصتنا",
+    "storyTitle": "شريك إبداعي استراتيجي للعلامات الحديثة",
+    "principlesLabel": "ما يوجّهنا",
+    "principlesTitle": "المبادئ التي نحملها في كل مشروع",
+    "finalCtaLabel": "ابنِ معنا",
+    "finalCtaTitle": "تبحث عن فريق يهتم بجودة العمل بقدر اهتمامه بالنتيجة؟",
+    "finalCtaDescription": "نمزج بين التفكير الاستراتيجي، والتنفيذ الإبداعي، والتعاون العملي لنساعد العلامات على التقدّم بثقة أكبر.",
+    "finalCtaAction": "ابدأ الحوار"
   }
 }
