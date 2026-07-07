@@ -199,6 +199,12 @@
     "fallbackTitle": "المقالات",
     "fallbackDescription": "اقرأ أحدث مقالاتنا ونصائحنا الاحترافية."
   },
+  "ServicePage": {
+    "homeLabel": "الرئيسية",
+    "backToServices": "العودة إلى خدماتنا",
+    "fallbackTitle": "خدماتنا",
+    "fallbackDescription": "اكتشف خدماتنا في الإبداع، الهوية، والتسويق الرقمي."
+  },
   "ArticlesPage": {
     "backToBlog": "العودة للرئيسية",
     "fallbackTitle": "المقالات",

@@ -9,8 +9,10 @@ import {
   Share2,
 } from "lucide-react";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getServiceSlug } from "../lib/service-cms";
 import { useServicesContent } from "../hooks/use-services-content";
 import type { AppLocale } from "../types";
 
@@ -68,7 +70,10 @@ export function ServicesSection({ locale }: ServicesSectionProps) {
                 delay={index * 0.1}
                 threshold={0.15}
               >
-                <div className="group h-full rounded-[1.5rem] border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10">
+                <Link
+                  href={`/services/${getServiceSlug(service.title)}`}
+                  className="group block h-full rounded-[1.5rem] border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10"
+                >
                   <div className="mb-5 flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     {service.image?.url ? (
                       <Image
@@ -92,7 +97,7 @@ export function ServicesSection({ locale }: ServicesSectionProps) {
                     className="leading-relaxed text-muted-foreground [&_p]:mb-0"
                     dangerouslySetInnerHTML={{ __html: service.description }}
                   />
-                </div>
+                </Link>
               </ScrollAnimationWrapper>
             );
           })}

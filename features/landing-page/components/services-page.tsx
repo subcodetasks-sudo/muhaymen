@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
 import { getServicesContent, getServicesSeoText } from "../lib/cms";
+import { getServiceSlug } from "../lib/service-cms";
 import type { AppLocale } from "../types";
 import { Footer } from "./footer";
 
@@ -179,9 +180,10 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
 
                 <div className="grid gap-6">
                   {content.services.slice(0, 3).map((service, index) => (
-                    <div
+                    <Link
                       key={`${service.title}-${index}`}
-                      className="flex items-start gap-4 rounded-[1.5rem] border border-border bg-card p-6 shadow-sm"
+                      href={`/services/${getServiceSlug(service.title)}`}
+                      className="flex items-start gap-4 rounded-[1.5rem] border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10"
                     >
                       <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary/10 text-sm font-black text-primary">
                         {service.image?.url ? (
@@ -208,7 +210,7 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
                           dangerouslySetInnerHTML={{ __html: service.description }}
                         />
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </section>
@@ -228,9 +230,10 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
 
               <div className="grid gap-6 md:grid-cols-2">
                 {remainingServices.map((service, index) => (
-                  <article
+                  <Link
                     key={`${service.title}-${index + 1}`}
-                    className="group relative overflow-hidden rounded-[1.75rem] border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10"
+                    href={`/services/${getServiceSlug(service.title)}`}
+                    className="group relative block overflow-hidden rounded-[1.75rem] border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10"
                   >
                     <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-primary via-primary/60 to-transparent opacity-70" />
                     <div className="mb-5 flex items-center justify-between gap-4">
@@ -259,7 +262,7 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
                       className="mt-3 text-base leading-relaxed text-muted-foreground [&_p]:mb-4 [&_p:last-child]:mb-0"
                       dangerouslySetInnerHTML={{ __html: service.description }}
                     />
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>

@@ -199,6 +199,12 @@
     "fallbackTitle": "Articles",
     "fallbackDescription": "Read our latest articles and insights."
   },
+  "ServicePage": {
+    "homeLabel": "Home",
+    "backToServices": "Back to services",
+    "fallbackTitle": "Services",
+    "fallbackDescription": "Discover our creative, branding, and digital marketing services."
+  },
   "ArticlesPage": {
     "backToBlog": "Back to home",
     "fallbackTitle": "Articles",
