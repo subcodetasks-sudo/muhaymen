@@ -14,7 +14,7 @@ import { AboutSection } from "./about";
 import { BlogSection } from "./articles";
 import { ClientsSection } from "./clients";
 import { ContactSection } from "./contact";
-import { CustomCursor, Footer } from "./layout";
+import { Footer } from "./layout";
 import { HeroSection } from "./hero";
 import { PortfolioSection } from "./portfolio";
 import { ProcessSection } from "./process";
@@ -46,7 +46,6 @@ export async function LandingPage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="landing-page min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
-        <CustomCursor />
         <HeroSection {...localeProps} />
         <WhatsAppSection locale={locale} />
         <AboutSection {...localeProps} content={aboutContent} />

@@ -35,10 +35,11 @@ export function CustomCursor() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 768px)");
-    const syncEnabled = () => setIsEnabled(mediaQuery.matches);
-    syncEnabled();
 
-    if (!mediaQuery.matches) return;
+    const setCursorEnabled = (enabled: boolean) => {
+      setIsEnabled(enabled);
+      document.documentElement.classList.toggle("has-custom-cursor", enabled);
+    };
 
     const handleMove = (event: MouseEvent) => {
       mouseX.set(event.clientX);
@@ -52,20 +53,37 @@ export function CustomCursor() {
     const handleLeave = () => setIsVisible(false);
     const handleEnter = () => setIsVisible(true);
 
-    mediaQuery.addEventListener("change", syncEnabled);
-    window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mousedown", handleDown);
-    window.addEventListener("mouseup", handleUp);
-    document.body.addEventListener("mouseleave", handleLeave);
-    document.body.addEventListener("mouseenter", handleEnter);
+    const addPointerListeners = () => {
+      window.addEventListener("mousemove", handleMove);
+      window.addEventListener("mousedown", handleDown);
+      window.addEventListener("mouseup", handleUp);
+      document.body.addEventListener("mouseleave", handleLeave);
+      document.body.addEventListener("mouseenter", handleEnter);
+    };
 
-    return () => {
-      mediaQuery.removeEventListener("change", syncEnabled);
+    const removePointerListeners = () => {
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mousedown", handleDown);
       window.removeEventListener("mouseup", handleUp);
       document.body.removeEventListener("mouseleave", handleLeave);
       document.body.removeEventListener("mouseenter", handleEnter);
+    };
+
+    const syncEnabled = () => {
+      const enabled = mediaQuery.matches;
+      setCursorEnabled(enabled);
+      removePointerListeners();
+      if (enabled) addPointerListeners();
+      else setIsVisible(false);
+    };
+
+    syncEnabled();
+    mediaQuery.addEventListener("change", syncEnabled);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncEnabled);
+      removePointerListeners();
+      document.documentElement.classList.remove("has-custom-cursor");
     };
   }, [mouseX, mouseY]);
 
@@ -74,9 +92,9 @@ export function CustomCursor() {
   const eyeScale = isPressed ? (isHovering ? 1.22 : 1.14) : isHovering ? 1.08 : 1;
 
   return (
-    <>
+    <div className="landing-page">
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-9998 hidden md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[1000000000] hidden md:block"
         style={{
           x: ringX,
           y: ringY,
@@ -95,7 +113,7 @@ export function CustomCursor() {
       </motion.div>
 
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-9999 hidden md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[1000000001] hidden md:block"
         style={{
           x: cursorX,
           y: cursorY,
@@ -122,6 +140,6 @@ export function CustomCursor() {
           </motion.div>
         </motion.div>
       </motion.div>
-    </>
+    </div>
   );
 }
