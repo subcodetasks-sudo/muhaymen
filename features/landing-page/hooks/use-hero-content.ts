@@ -5,7 +5,7 @@ import { fetchApi } from "@/lib/api";
 import { landingCmsKeys } from "../lib/query-keys";
 import type { AppLocale, HeroContentResponse } from "../types";
 
-export function useHeroContent(locale: AppLocale) {
+export function useHeroContent(locale: AppLocale, initialData?: HeroContentResponse["data"]) {
   return useQuery({
     queryKey: landingCmsKeys.hero(locale),
     queryFn: async () => {
@@ -14,5 +14,6 @@ export function useHeroContent(locale: AppLocale) {
       });
       return response.data;
     },
+    initialData,
   });
 }

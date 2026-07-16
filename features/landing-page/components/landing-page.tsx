@@ -29,18 +29,11 @@ export async function LandingPage() {
   const localeProps = { locale, direction };
   const queryClient = getQueryClient();
 
-  const [aboutContent, clientsContent, methodologyContent] = await Promise.all([
+  const [aboutContent, clientsContent, methodologyContent, servicesContent] = await Promise.all([
     getAboutContent(locale),
     getClientsContent(locale),
     getMethodologyContent(locale),
-    queryClient.prefetchQuery({
-      queryKey: landingCmsKeys.hero(locale),
-      queryFn: () => getHeroContent(locale),
-    }),
-    queryClient.prefetchQuery({
-      queryKey: landingCmsKeys.services(locale),
-      queryFn: () => getServicesContent(locale),
-    }),
+    getServicesContent(locale),
   ]);
 
   return (
@@ -49,7 +42,7 @@ export async function LandingPage() {
         <HeroSection {...localeProps} />
         <WhatsAppSection locale={locale} />
         <AboutSection {...localeProps} content={aboutContent} />
-        <ServicesSection locale={locale} />
+        <ServicesSection locale={locale} initialData={servicesContent} />
         <PortfolioSection {...localeProps} />
         <ClientsSection content={clientsContent} locale={locale} />
         <StatsSection />

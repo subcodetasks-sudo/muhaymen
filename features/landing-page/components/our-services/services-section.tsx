@@ -9,17 +9,18 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { getServiceSlug } from "../../lib/service-cms";
 import { useServicesContent } from "../../hooks/use-services-content";
-import type { AppLocale } from "../../types";
+import type { AppLocale, ServicesContent } from "../../types";
 import { ServiceCard } from "./service-card";
 import { ServiceCardSkeleton } from "./service-card-skeleton";
 
 type ServicesSectionProps = {
   locale: AppLocale;
+  initialData?: ServicesContent;
 };
 
-export function ServicesSection({ locale }: ServicesSectionProps) {
+export function ServicesSection({ locale, initialData }: ServicesSectionProps) {
   const t = useTranslations("LandingPage.services");
-  const { data: content } = useServicesContent(locale);
+  const { data: content } = useServicesContent(locale, initialData);
   const isRtl = getDirection(locale) === "rtl";
   const CtaArrow = isRtl ? ArrowLeft : ArrowRight;
   const visibleServices = content?.services.slice(0, 3) ?? [];

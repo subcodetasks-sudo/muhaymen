@@ -8,7 +8,7 @@ import { Button } from "@/components/react-bits/ui/button";
 import { cn } from "@/lib/utils";
 import { useHeroContent } from "../../hooks/use-hero-content";
 import { scrollToSection } from "../../lib/scroll-to-section";
-import type { AppLocale, TextDirection } from "../../types";
+import type { AppLocale, TextDirection, HeroContent } from "../../types";
 import { HeroMarquee } from "./hero-marquee";
 import SideRays from "@/components/react-bits/SideRays";
 
@@ -17,11 +17,12 @@ const LANDING_PRIMARY = "#e9b10d";
 type HeroSectionClientProps = {
   locale: AppLocale;
   direction: TextDirection;
+  initialData?: HeroContent;
 };
 
-export function HeroSectionClient({ locale, direction }: HeroSectionClientProps) {
+export function HeroSectionClient({ locale, direction, initialData }: HeroSectionClientProps) {
   const t = useTranslations("LandingPage.hero");
-  const { data: content } = useHeroContent(locale);
+  const { data: content } = useHeroContent(locale, initialData);
   const isRtl = direction === "rtl";
   const CtaArrow = isRtl ? ArrowRight : ArrowLeft;
   const ref = useRef<HTMLElement>(null);

@@ -17,7 +17,7 @@ export async function HeroSection({ locale, direction }: LocaleProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HeroSectionClient locale={locale} direction={direction} />
+      <HeroSectionClient locale={locale} direction={direction} initialData={content} />
     </>
   );
 }

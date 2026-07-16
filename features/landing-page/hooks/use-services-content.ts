@@ -5,7 +5,7 @@ import { fetchApi } from "@/lib/api";
 import { landingCmsKeys } from "../lib/query-keys";
 import type { AppLocale, ServicesContentResponse } from "../types";
 
-export function useServicesContent(locale: AppLocale) {
+export function useServicesContent(locale: AppLocale, initialData?: ServicesContentResponse["data"]) {
   return useQuery({
     queryKey: landingCmsKeys.services(locale),
     queryFn: async () => {
@@ -14,5 +14,6 @@ export function useServicesContent(locale: AppLocale) {
       });
       return response.data;
     },
+    initialData,
   });
 }
