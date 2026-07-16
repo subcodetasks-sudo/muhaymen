@@ -5,6 +5,8 @@ export const landingCmsKeys = {
   hero: (locale: AppLocale) => [...landingCmsKeys.all, "hero", locale] as const,
   services: (locale: AppLocale) =>
     [...landingCmsKeys.all, "services", locale] as const,
+  articles: (locale: AppLocale) =>
+    [...landingCmsKeys.all, "articles", locale] as const,
   clients: (locale: AppLocale) =>
     [...landingCmsKeys.all, "clients", locale] as const,
   methodology: (locale: AppLocale) =>
@@ -13,4 +15,8 @@ export const landingCmsKeys = {
 
 export const settingsKeys = {
   all: ["app-settings"] as const,
+};
+
+export const favoritesKeys = {
+  all: ["favorites"] as const,
 };

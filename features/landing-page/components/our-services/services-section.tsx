@@ -2,8 +2,8 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/react-bits/ui/button";
+import { Skeleton } from "@/components/react-bits/ui/skeleton";
 import { getDirection } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
@@ -81,6 +81,7 @@ export function ServicesSection({ locale }: ServicesSectionProps) {
             >
               <ServiceCard
                 service={service}
+                index={index}
                 href={`/services/${getServiceSlug(service.title)}`}
               />
             </ScrollAnimationWrapper>

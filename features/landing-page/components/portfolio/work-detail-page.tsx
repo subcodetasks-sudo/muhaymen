@@ -7,11 +7,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
+} from "@/components/react-bits/ui/breadcrumb";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
-import { getWorkSeoText } from "../../lib/work-cms";
 import type { AppLocale, WorkDetail } from "../../types";
 import { Footer } from "../layout/footer";
 
@@ -22,6 +21,10 @@ type WorkDetailPageProps = {
   backLabel: string;
   worksLabel: string;
 };
+
+function stripHtml(value: string) {
+  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
 
 export function WorkDetailPage({
   locale,
@@ -34,7 +37,7 @@ export function WorkDetailPage({
   const isRtl = direction === "rtl";
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
   const PathSeparator = isRtl ? ChevronLeft : ChevronRight;
-  const { title: workTitle } = getWorkSeoText(work);
+  const workTitle = stripHtml(work.title);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">

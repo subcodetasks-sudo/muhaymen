@@ -7,25 +7,35 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
+} from "@/components/react-bits/ui/breadcrumb";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
-import { getServiceSeoText, type ServiceDetail } from "../../lib/service-cms";
+import type { ServiceDetail } from "../../lib/service-cms";
 import type { AppLocale } from "../../types";
+import { getServiceFavoriteId } from "../../lib/favorites-ids";
+import { FavoriteButton } from "../favorites/favorite-button";
 import { Footer } from "../layout/footer";
 
 type ServiceDetailsPageProps = {
   locale: AppLocale;
   service: ServiceDetail;
+  serviceIndex: number;
+  legacySlug?: string;
   homeLabel: string;
   backLabel: string;
   servicesLabel: string;
 };
 
+function stripHtml(value: string) {
+  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 export function ServiceDetailsPage({
   locale,
   service,
+  serviceIndex,
+  legacySlug,
   homeLabel,
   backLabel,
   servicesLabel,
@@ -34,7 +44,11 @@ export function ServiceDetailsPage({
   const isRtl = direction === "rtl";
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
   const PathSeparator = isRtl ? ChevronLeft : ChevronRight;
-  const { title: serviceTitle } = getServiceSeoText(service);
+  const serviceTitle = stripHtml(service.title);
+  const favoriteId = getServiceFavoriteId(service, serviceIndex);
+  const aliases = [service.slug, legacySlug].filter(
+    (value): value is string => Boolean(value) && value !== favoriteId,
+  );
 
   return (
     <div className="min-h-screen overflow-x-clip bg-background font-sans text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -111,10 +125,19 @@ export function ServiceDetailsPage({
               <span className="mb-5 inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-bold text-primary">
                 {servicesLabel}
               </span>
-              <h1
-                className="mb-6 text-4xl font-black text-foreground md:text-5xl [&_p]:contents"
-                dangerouslySetInnerHTML={{ __html: service.title }}
-              />
+              <div className="mb-6 flex items-start gap-3">
+                <h1
+                  className="min-w-0 flex-1 text-4xl font-black text-foreground md:text-5xl [&_p]:contents"
+                  dangerouslySetInnerHTML={{ __html: service.title }}
+                />
+                <FavoriteButton
+                  type="service"
+                  id={favoriteId}
+                  aliases={aliases}
+                  variant="inline"
+                  className="mt-1"
+                />
+              </div>
               <div
                 className="text-lg leading-relaxed text-muted-foreground [&_p]:mb-4 [&_p:last-child]:mb-0"
                 dangerouslySetInnerHTML={{ __html: service.description }}

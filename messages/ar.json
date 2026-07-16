@@ -19,9 +19,11 @@
       "closeMenu": "إغلاق القائمة",
       "hero": "الرئيسية",
       "services": "خدماتنا",
+      "articles": "مقالاتنا",
       "portfolio": "أعمالنا",
       "clients": "عملاؤنا",
-      "about": "من نحن"
+      "about": "من نحن",
+      "favorites": "المفضلة"
     },
     "hero": {
       "badge": "مهيمن — حيث تبدأ الهيمنة الرقمية",
@@ -229,6 +231,10 @@
     "focusLabel": "محور العمل",
     "focusValue": "الاستراتيجية، التصميم، والنمو",
     "featuredLabel": "خدمة مميزة",
+    "featuredExplore": "استكشف هذه الخدمة",
+    "featuredAsideLabel": "جاهزون عندما تكون مستعدًا",
+    "featuredAsideTitle": "تريد هذه الخدمة في حملتك القادمة؟",
+    "featuredAsideDescription": "نربط الاستراتيجية والإبداع والوسائط في خطة واضحة واحدة — ثم ننفّذ معك من الانطلاقة حتى النتائج.",
     "capabilitiesLabel": "الخدمات",
     "capabilitiesTitle": "خدمات متخصصة صُممت لتعمل معًا",
     "ctaLabel": "لنصنع زخمًا",
@@ -256,5 +262,33 @@
     "finalCtaTitle": "تبحث عن فريق يهتم بجودة العمل بقدر اهتمامه بالنتيجة؟",
     "finalCtaDescription": "نمزج بين التفكير الاستراتيجي، والتنفيذ الإبداعي، والتعاون العملي لنساعد العلامات على التقدّم بثقة أكبر.",
     "finalCtaAction": "ابدأ الحوار"
+  },
+  "Favorites": {
+    "saveService": "إضافة الخدمة إلى المفضلة",
+    "removeService": "إزالة الخدمة من المفضلة",
+    "saveArticle": "إضافة المقال إلى المفضلة",
+    "removeArticle": "إزالة المقال من المفضلة",
+    "addedService": "تمت إضافة الخدمة إلى المفضلة",
+    "removedService": "تمت إزالة الخدمة من المفضلة",
+    "addedArticle": "تمت إضافة المقال إلى المفضلة",
+    "removedArticle": "تمت إزالة المقال من المفضلة"
+  },
+  "FavoritesPage": {
+    "backToHome": "العودة للرئيسية",
+    "title": "المفضلة",
+    "description": "المقالات والخدمات التي حفظتها للاطلاع لاحقًا.",
+    "fallbackTitle": "المفضلة",
+    "fallbackDescription": "تصفح المقالات والخدمات المحفوظة لديك.",
+    "loading": "جاري تحميل المفضلة",
+    "filters": {
+      "all": "الكل",
+      "articles": "المقالات",
+      "services": "الخدمات"
+    },
+    "emptyAll": "لم تحفظ أي عناصر في المفضلة بعد.",
+    "emptyArticles": "لم تحفظ أي مقالات بعد.",
+    "emptyServices": "لم تحفظ أي خدمات بعد.",
+    "browseArticles": "تصفح المقالات",
+    "browseServices": "تصفح الخدمات"
   }
 }

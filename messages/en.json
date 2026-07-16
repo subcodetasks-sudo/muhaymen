@@ -19,9 +19,11 @@
       "closeMenu": "Close menu",
       "hero": "Home",
       "services": "Services",
+      "articles": "Articles",
       "portfolio": "Portfolio",
       "clients": "Clients",
-      "about": "About"
+      "about": "About",
+      "favorites": "Favorites"
     },
     "hero": {
       "badge": "Muhaymin — where digital dominance begins",
@@ -229,6 +231,10 @@
     "focusLabel": "Primary focus",
     "focusValue": "Strategy, design, and growth",
     "featuredLabel": "Featured capability",
+    "featuredExplore": "Explore this service",
+    "featuredAsideLabel": "Ready when you are",
+    "featuredAsideTitle": "Want this capability on your next campaign?",
+    "featuredAsideDescription": "We map strategy, creative, and media into one clear plan — then execute with you from kickoff to results.",
     "capabilitiesLabel": "Capabilities",
     "capabilitiesTitle": "Specialized services, designed to work together",
     "ctaLabel": "Let's create momentum",
@@ -256,5 +262,33 @@
     "finalCtaTitle": "Looking for a team that cares about the work as much as the outcome?",
     "finalCtaDescription": "We combine strategic thinking, creative execution, and practical collaboration to help brands move with more confidence.",
     "finalCtaAction": "Start the conversation"
+  },
+  "Favorites": {
+    "saveService": "Add service to favorites",
+    "removeService": "Remove service from favorites",
+    "saveArticle": "Add article to favorites",
+    "removeArticle": "Remove article from favorites",
+    "addedService": "Service added to favorites",
+    "removedService": "Service removed from favorites",
+    "addedArticle": "Article added to favorites",
+    "removedArticle": "Article removed from favorites"
+  },
+  "FavoritesPage": {
+    "backToHome": "Back to home",
+    "title": "Favorites",
+    "description": "Articles and services you saved for later.",
+    "fallbackTitle": "Favorites",
+    "fallbackDescription": "Browse your saved articles and services.",
+    "loading": "Loading favorites",
+    "filters": {
+      "all": "All",
+      "articles": "Articles",
+      "services": "Services"
+    },
+    "emptyAll": "You have not saved any favorites yet.",
+    "emptyArticles": "You have not saved any articles yet.",
+    "emptyServices": "You have not saved any services yet.",
+    "browseArticles": "Browse articles",
+    "browseServices": "Browse services"
   }
 }
