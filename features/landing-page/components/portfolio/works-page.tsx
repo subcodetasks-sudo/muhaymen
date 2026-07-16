@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
 import { buildWorksJsonLd, getWorksContent } from "../../lib/cms";

@@ -2,7 +2,7 @@
 
 import { Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 

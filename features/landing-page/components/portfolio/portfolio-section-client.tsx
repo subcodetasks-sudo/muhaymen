@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import { getDirection } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";

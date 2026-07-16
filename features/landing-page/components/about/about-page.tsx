@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
 import {

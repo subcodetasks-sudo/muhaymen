@@ -3,11 +3,11 @@
 import { Mail, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/react-bits/ui/button";
+import { Input } from "@/components/react-bits/ui/input";
+import { Textarea } from "@/components/react-bits/ui/textarea";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
+import { showErrorToast, showSuccessToast } from "@/components/themed-toast";
 import { useParams } from "next/navigation";
 import { fetchApi } from "@/lib/api";
 import { useAppSettings } from "@/hooks/use-app-settings";
@@ -46,14 +46,14 @@ export function ContactSection() {
       });
 
       if (response && response.success) {
-        toast.success(response.message || t("successTitle"));
+        showSuccessToast(response.message || t("successTitle"));
         form.reset();
       } else {
-        toast.error(response?.message || "حدث خطأ ما");
+        showErrorToast(response?.message || "حدث خطأ ما");
       }
     } catch (error) {
       const apiError = error as { body?: { message?: string }; message?: string };
-      toast.error(apiError?.body?.message || apiError?.message || "حدث خطأ ما");
+      showErrorToast(apiError?.body?.message || apiError?.message || "حدث خطأ ما");
     } finally {
       setIsSubmitting(false);
     }
@@ -159,4 +159,3 @@ export function ContactSection() {
     </section>
   );
 }
-

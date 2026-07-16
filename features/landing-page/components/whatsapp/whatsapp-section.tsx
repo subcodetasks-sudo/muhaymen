@@ -4,7 +4,7 @@ import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ScrollAnimationWrapper } from "@/components/scroll-animation-wrapper";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/react-bits/ui/skeleton";
 import { useHeroContent } from "../../hooks/use-hero-content";
 import { Marquee } from "@/components/magicui/marquee";
 import type { AppLocale, CmsImage } from "../../types";
