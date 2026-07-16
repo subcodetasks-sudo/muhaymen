@@ -4,6 +4,7 @@ export const ABOUT_US_IMAGE_PATH = "/landing/about-us.webp";
 export const NAV_SECTION_IDS = [
   "hero",
   "services",
+  "articles",
   "portfolio",
   "clients",
   "about",

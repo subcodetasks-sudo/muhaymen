@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Heart, Menu, X } from "lucide-react";
 import {
   AnimatePresence,
   motion,
@@ -11,7 +11,7 @@ import {
 } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,13 +19,24 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@/components/react-bits/ui/navigation-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/react-bits/ui/tooltip";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { getDirection } from "@/i18n/locale";
 import { Link, usePathname } from "@/i18n/navigation";
 import { getAppName } from "@/lib/settings";
+import { cn } from "@/lib/utils";
+import { useArticlesContent } from "../../hooks/use-articles-content";
+import { useFavorites } from "../../hooks/use-favorites";
 import { useServicesContent } from "../../hooks/use-services-content";
+import { getEmptyFavorites } from "../../lib/favorites-storage";
 import { getServiceSlug } from "../../lib/service-cms";
+import { getAllArticlesWithCategory } from "../../utils/articles-utils";
 import type { AppLocale } from "../../types";
 import { LanguageToggle } from "./language-toggle";
 import { LOGO_PATH, NAV_SECTION_IDS } from "../../lib/constants";
@@ -91,15 +102,21 @@ export function Navbar() {
   const locale = useLocale() as AppLocale;
   const direction = getDirection(locale);
   const isRtl = direction === "rtl";
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const isFavoritesPage = pathname === "/favorites";
   const { data: settings } = useAppSettings();
   const { data: servicesContent } = useServicesContent(locale);
+  const { data: articlesContent } = useArticlesContent(locale);
+  const { data: favoritesData } = useFavorites();
+  const favorites = favoritesData ?? getEmptyFavorites();
+  const favoritesCount =
+    favorites.articles.length + favorites.services.length;
   const logoAlt = settings
     ? `${getAppName(settings, locale)} Logo`
     : "Muhaymin Logo";
   const logoSrc = settings?.logo || LOGO_PATH;
   const isRemoteLogo = logoSrc.startsWith("http");
-  const pathname = usePathname();
-  const isHome = pathname === "/";
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
   const scrollProgress = useTransform(scrollY, [0, SCROLL_RANGE], [0, 1], {
@@ -149,81 +166,169 @@ export function Navbar() {
   }, [isOpen]);
 
   const navLinkClassName =
-    "cursor-pointer whitespace-nowrap text-sm font-bold transition-colors hover:text-primary";
+    "cursor-pointer whitespace-nowrap px-3.5 py-1 text-sm font-bold transition-colors hover:bg-transparent hover:text-primary hover:underline underline-offset-4 focus:bg-transparent";
   const mobileNavLinkClassName =
     `block w-full cursor-pointer border-b border-border/50 py-3 text-lg font-semibold transition-colors hover:text-primary ${
       isRtl ? "text-right" : "text-left"
     }`;
 
-  const renderServicesDesktopItem = () => {
-    const label = t("services");
+  const navTriggerClassName =
+    "h-auto rounded-none bg-transparent px-3.5 py-1 text-sm font-bold hover:bg-transparent hover:underline underline-offset-4 focus:bg-transparent focus-visible:ring-0 data-open:bg-transparent data-open:hover:bg-transparent data-open:focus:bg-transparent data-popup-open:bg-transparent data-popup-open:hover:bg-transparent data-open:text-primary";
+  const menuParentLinkClassName =
+    "cursor-pointer px-3.5 py-1 text-sm font-semibold text-foreground hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary";
+  const menuChildLinkClassName =
+    "cursor-pointer px-3.5 py-1 text-sm text-muted-foreground hover:bg-muted hover:text-primary focus:bg-muted focus:text-primary";
 
-    if (!servicesContent?.services.length) {
+  const getNavHref = (id: string) =>
+    id === "portfolio"
+      ? "/works"
+      : id === "about"
+        ? "/about-us"
+        : id === "services"
+          ? "/services"
+          : id === "articles"
+            ? "/articles"
+            : (`/#${id}` as const);
+
+  const renderServicesMenuItem = () => {
+    const label = t("services");
+    const services = servicesContent?.services ?? [];
+
+    if (!services.length) {
       return (
-        <Link key="services" href="/services" className={navLinkClassName}>
-          {label}
-        </Link>
+        <NavigationMenuItem key="services">
+          <NavigationMenuLink asChild className={navLinkClassName}>
+            <Link href="/services">{label}</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
       );
     }
 
     return (
-      <NavigationMenu key="services" viewport={false} className="z-50 flex-none">
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="h-auto bg-transparent px-0 py-0 text-sm font-bold hover:bg-transparent focus:bg-transparent data-open:bg-transparent data-open:hover:bg-transparent data-[state=open]:text-primary">
-              {label}
-            </NavigationMenuTrigger>
-            <NavigationMenuContent className="min-w-72 p-2">
-              <div className="grid gap-1">
-                <NavigationMenuLink asChild>
-                  <Link
-                    href="/services"
-                    className="block rounded-md px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted hover:text-primary"
-                  >
-                    {label}
+      <NavigationMenuItem key="services">
+        <NavigationMenuTrigger className={navTriggerClassName}>
+          {label}
+        </NavigationMenuTrigger>
+        <NavigationMenuContent className="min-w-72">
+          <ul className="grid gap-1 p-1">
+            <li>
+              <NavigationMenuLink asChild className={menuParentLinkClassName}>
+                <Link href="/services">{label}</Link>
+              </NavigationMenuLink>
+            </li>
+            {services.map((service) => {
+              const slug = getServiceSlug(service.title);
+              return (
+                <li key={slug}>
+                  <NavigationMenuLink asChild className={menuChildLinkClassName}>
+                    <Link href={`/services/${slug}`}>
+                      <span
+                        className="[&_p]:contents"
+                        dangerouslySetInnerHTML={{ __html: service.title }}
+                      />
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+              );
+            })}
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    );
+  };
+
+  const renderArticlesMenuItem = () => {
+    const label = t("articles");
+    const articles = articlesContent
+      ? getAllArticlesWithCategory(articlesContent)
+      : [];
+
+    if (!articles.length) {
+      return (
+        <NavigationMenuItem key="articles">
+          <NavigationMenuLink asChild className={navLinkClassName}>
+            <Link href="/articles">{label}</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      );
+    }
+
+    return (
+      <NavigationMenuItem key="articles">
+        <NavigationMenuTrigger className={navTriggerClassName}>
+          {label}
+        </NavigationMenuTrigger>
+        <NavigationMenuContent className="min-w-72">
+          <ul className="grid gap-1 p-1">
+            <li>
+              <NavigationMenuLink asChild className={menuParentLinkClassName}>
+                <Link href="/articles">{label}</Link>
+              </NavigationMenuLink>
+            </li>
+            {articles.map((article) => (
+              <li key={article.slug}>
+                <NavigationMenuLink asChild className={menuChildLinkClassName}>
+                  <Link href={`/articles/${article.slug}`}>
+                    <span
+                      className="[&_p]:contents"
+                      dangerouslySetInnerHTML={{ __html: article.title }}
+                    />
                   </Link>
                 </NavigationMenuLink>
-                {servicesContent.services.map((service) => {
-                  const slug = getServiceSlug(service.title);
-                  return (
-                    <NavigationMenuLink key={slug} asChild>
-                      <Link
-                        href={`/services/${slug}`}
-                        className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
-                      >
-                        <span
-                          className="[&_p]:contents"
-                          dangerouslySetInnerHTML={{ __html: service.title }}
-                        />
-                      </Link>
-                    </NavigationMenuLink>
-                  );
-                })}
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+              </li>
+            ))}
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    );
+  };
+
+  const renderDesktopNavItem = (id: (typeof NAV_SECTION_IDS)[number]) => {
+    if (id === "services") {
+      return renderServicesMenuItem();
+    }
+
+    if (id === "articles") {
+      return renderArticlesMenuItem();
+    }
+
+    const label = t(id);
+    const href = getNavHref(id);
+
+    if (isHome && (id === "hero" || id === "clients")) {
+      return (
+        <NavigationMenuItem key={id}>
+          <button
+            type="button"
+            onClick={() => handleNavigate(id)}
+            className={navLinkClassName}
+          >
+            {label}
+          </button>
+        </NavigationMenuItem>
+      );
+    }
+
+    return (
+      <NavigationMenuItem key={id}>
+        <NavigationMenuLink asChild className={navLinkClassName}>
+          <Link href={href}>{label}</Link>
+        </NavigationMenuLink>
+      </NavigationMenuItem>
     );
   };
 
   const renderNavItem = (id: string, className: string, mobile = false) => {
     const label = t(id);
-    const href =
-      id === "portfolio"
-        ? "/works"
-        : id === "about"
-          ? "/about-us"
-        : id === "services"
-          ? "/services"
-          : (`/#${id}` as const);
+    const href = getNavHref(id);
 
     if (isHome) {
-      if (id === "services" && !mobile) {
-        return renderServicesDesktopItem();
-      }
-
-      if (id === "portfolio" || id === "services" || id === "about") {
+      if (
+        id === "portfolio" ||
+        id === "services" ||
+        id === "articles" ||
+        id === "about"
+      ) {
         const Component = mobile ? motion.div : "div";
 
         return (
@@ -262,14 +367,53 @@ export function Navbar() {
       );
     }
 
-    if (id === "services") {
-      return renderServicesDesktopItem();
-    }
-
     return (
       <Link key={id} href={href} className={className}>
         {label}
       </Link>
+    );
+  };
+
+  const renderFavoritesLink = (mobile = false) => {
+    const label = t("favorites");
+    const className = cn(
+      "relative inline-flex items-center justify-center rounded-full transition-colors",
+      mobile
+        ? "h-11 w-11 border border-border text-foreground hover:bg-muted"
+        : "h-10 w-10 text-foreground hover:bg-muted hover:text-primary",
+      isFavoritesPage && "text-red-500",
+    );
+
+    const link = (
+      <Link
+        href="/favorites"
+        onClick={mobile ? closeMenu : undefined}
+        className={className}
+        aria-label={label}
+        aria-current={isFavoritesPage ? "page" : undefined}
+      >
+        <Heart
+          size={18}
+          className={cn(favoritesCount > 0 && "fill-current text-red-500")}
+          aria-hidden
+        />
+        {favoritesCount > 0 ? (
+          <span className="absolute -top-1 -inset-e-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+            {favoritesCount > 99 ? "99+" : favoritesCount}
+          </span>
+        ) : null}
+      </Link>
+    );
+
+    return (
+      <TooltipProvider delayDuration={200}>
+        <Tooltip>
+          <TooltipTrigger asChild>{link}</TooltipTrigger>
+          <TooltipContent side="top" sideOffset={8}>
+            {label}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   };
 
@@ -354,18 +498,25 @@ export function Navbar() {
           </Link>
         )}
 
-        <div className="hidden items-center justify-center gap-7 lg:flex">
-          {NAV_SECTION_IDS.map((id) => renderNavItem(id, navLinkClassName))}
-        </div>
+        <NavigationMenu
+          dir={direction}
+          className="z-50 hidden max-w-none flex-none justify-center lg:flex"
+        >
+          <NavigationMenuList>
+            {NAV_SECTION_IDS.map((id) => renderDesktopNavItem(id))}
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
+          {renderFavoritesLink()}
           <LanguageToggle />
           {renderContactCta(
             "rounded-full bg-primary px-6 font-bold text-primary-foreground hover:bg-primary/90",
           )}
         </div>
 
-        <div className="col-span-2 flex items-center justify-end lg:hidden">
+        <div className="col-span-2 flex items-center justify-end gap-3 lg:hidden">
+          {renderFavoritesLink()}
           <button
             type="button"
             className="cursor-pointer text-foreground"
@@ -459,6 +610,15 @@ export function Navbar() {
                 {NAV_SECTION_IDS.map((id) =>
                   renderNavItem(id, mobileNavLinkClassName, true),
                 )}
+                <motion.div variants={mobileMenuItemVariants}>
+                  <Link
+                    href="/favorites"
+                    onClick={closeMenu}
+                    className={mobileNavLinkClassName}
+                  >
+                    {t("favorites")}
+                  </Link>
+                </motion.div>
                 <motion.div variants={mobileMenuItemVariants} className="pt-2">
                   {renderContactCta(
                     "w-full rounded-full bg-primary py-3 text-base font-bold text-primary-foreground hover:bg-primary/90",
