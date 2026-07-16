@@ -1,21 +1,37 @@
 import type { MetadataRoute } from "next";
 import {
   getArticlesContent,
+  getServicesContent,
   getWorksContent,
 } from "@/features/landing-page/lib/cms";
+import { getServiceSlug } from "@/features/landing-page/lib/service-cms";
 import type { AppLocale } from "@/features/landing-page/types";
 import { getAllArticlesWithCategory } from "@/features/landing-page/utils/articles-utils";
 import { getAllWorksWithCategory } from "@/features/landing-page/utils/portfolio-utils";
 import { routing } from "@/i18n/routing";
+import { getAppSettings } from "@/lib/settings-server";
 import {
   getAbsoluteLocalizedUrl,
   getLanguageAlternates,
+  type LocalizedHref,
 } from "@/lib/site-url";
 
 export const revalidate = 3600;
 
+const STATIC_PAGES: Array<{
+  href: Extract<LocalizedHref, string>;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+  priority: number;
+}> = [
+  { href: "/", changeFrequency: "weekly", priority: 1 },
+  { href: "/about-us", changeFrequency: "monthly", priority: 0.9 },
+  { href: "/services", changeFrequency: "weekly", priority: 0.9 },
+  { href: "/works", changeFrequency: "weekly", priority: 0.8 },
+  { href: "/articles", changeFrequency: "weekly", priority: 0.8 },
+];
+
 function createStaticEntry(
-  href: "/" | "/articles",
+  href: Extract<LocalizedHref, string>,
   options: {
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
     priority: number;
@@ -53,13 +69,31 @@ async function getArticleEntries(): Promise<MetadataRoute.Sitemap> {
   );
 }
 
+async function getServiceEntries(): Promise<MetadataRoute.Sitemap> {
+  const servicesByLocale = await Promise.all(
+    routing.locales.map(async (locale) => ({
+      locale: locale as AppLocale,
+      services: (await getServicesContent(locale as AppLocale)).services,
+    })),
+  );
+
+  return servicesByLocale.flatMap(({ locale, services }) =>
+    services.map((service) => ({
+      url: getAbsoluteLocalizedUrl(locale, {
+        pathname: "/services/[serviceSlug]",
+        params: { serviceSlug: getServiceSlug(service.title) },
+      }),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  );
+}
+
 async function getWorkEntries(): Promise<MetadataRoute.Sitemap> {
   const worksByLocale = await Promise.all(
     routing.locales.map(async (locale) => ({
       locale: locale as AppLocale,
-      works: getAllWorksWithCategory(
-        await getWorksContent(locale as AppLocale),
-      ),
+      works: getAllWorksWithCategory(await getWorksContent(locale as AppLocale)),
     })),
   );
 
@@ -76,20 +110,29 @@ async function getWorkEntries(): Promise<MetadataRoute.Sitemap> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articleEntries, workEntries] = await Promise.all([
+  try {
+    const settings = await getAppSettings();
+    if (settings.maintenance_mode) {
+      return [];
+    }
+  } catch {
+    // Fall through and serve the public sitemap when settings are unavailable.
+  }
+
+  const [articleEntries, serviceEntries, workEntries] = await Promise.all([
     getArticleEntries(),
+    getServiceEntries(),
     getWorkEntries(),
   ]);
 
   return [
-    createStaticEntry("/", {
-      changeFrequency: "weekly",
-      priority: 1,
-    }),
-    createStaticEntry("/articles", {
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }),
+    ...STATIC_PAGES.map((page) =>
+      createStaticEntry(page.href, {
+        changeFrequency: page.changeFrequency,
+        priority: page.priority,
+      }),
+    ),
+    ...serviceEntries,
     ...articleEntries,
     ...workEntries,
   ];

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
-import { getArticleFavoriteId } from "../../lib/favorites-ids";
+import { getArticleFavoriteKeys } from "../../lib/favorites-ids";
 import type { AppLocale, ArticleDetail } from "../../types";
 import { FavoriteButton } from "../favorites/favorite-button";
 import { Footer } from "../layout/footer";
@@ -44,9 +44,10 @@ export function ArticleDetailPage({
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
   const PathSeparator = isRtl ? ChevronLeft : ChevronRight;
   const articleTitle = stripHtml(article.title);
-  const favoriteId = getArticleFavoriteId(article, articleIndex);
-  const aliases = [article.slug, legacySlug].filter(
-    (value): value is string => Boolean(value) && value !== favoriteId,
+  const { id: favoriteId, aliases } = getArticleFavoriteKeys(
+    article,
+    articleIndex,
+    [legacySlug],
   );
 
   return (

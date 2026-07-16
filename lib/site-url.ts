@@ -9,12 +9,19 @@ export function getPublicSiteUrl(): string {
   );
 }
 
-type LocalizedHref =
+export type LocalizedHref =
   | "/"
+  | "/about-us"
   | "/articles"
+  | "/services"
+  | "/works"
   | {
       pathname: "/articles/[articleSlug]";
       params: { articleSlug: string };
+    }
+  | {
+      pathname: "/services/[serviceSlug]";
+      params: { serviceSlug: string };
     }
   | {
       pathname: "/works/[workSlug]";
@@ -29,7 +36,9 @@ export function getAbsoluteLocalizedUrl(
   return `${getPublicSiteUrl()}${pathname}`;
 }
 
-export function getLanguageAlternates(href: LocalizedHref): Record<string, string> {
+export function getLanguageAlternates(
+  href: LocalizedHref,
+): Record<string, string> {
   const languages = Object.fromEntries(
     routing.locales.map((locale) => [
       locale,

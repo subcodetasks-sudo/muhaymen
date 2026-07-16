@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { BorderGlow } from "@/components/react-bits/border-glow";
 import type { ArticleWithCategory } from "../../types";
-import { getArticleFavoriteId } from "../../lib/favorites-ids";
+import { getArticleFavoriteKeys } from "../../lib/favorites-ids";
 import { FavoriteButton } from "../favorites/favorite-button";
 
 type ArticleCardProps = {
@@ -28,9 +28,10 @@ export function ArticleCard({
   const imageAlt = article.image?.text || stripHtml(article.title);
   const href = `/articles/${article.slug}`;
   const titleText = stripHtml(article.title);
-  const favoriteId = getArticleFavoriteId(article, index);
-  const aliases = [article.slug, legacySlug].filter(
-    (value): value is string => Boolean(value) && value !== favoriteId,
+  const { id: favoriteId, aliases } = getArticleFavoriteKeys(
+    article,
+    index,
+    [legacySlug],
   );
 
   return (

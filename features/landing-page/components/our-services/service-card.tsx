@@ -6,8 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { BorderGlow } from "@/components/react-bits/border-glow";
 import { cn } from "@/lib/utils";
 import type { CmsServiceItem } from "../../types";
-import { getServiceFavoriteId } from "../../lib/favorites-ids";
-import { getServiceSlug } from "../../lib/service-cms";
+import { getServiceFavoriteKeys } from "../../lib/favorites-ids";
 import { FavoriteButton } from "../favorites/favorite-button";
 
 type ServiceCardProps = {
@@ -34,10 +33,10 @@ export function ServiceCard({
   const imageUrl = service.image?.url;
   const imageAlt = service.image?.alt || stripHtml(service.title);
   const titleText = stripHtml(service.title);
-  const slug = getServiceSlug(service.title);
-  const favoriteId = getServiceFavoriteId(service, index);
-  const aliases = [slug, legacySlug].filter(
-    (value): value is string => Boolean(value) && value !== favoriteId,
+  const { id: favoriteId, aliases } = getServiceFavoriteKeys(
+    service,
+    index,
+    [legacySlug],
   );
 
   return (

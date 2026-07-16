@@ -7,8 +7,8 @@ import { Button } from "@/components/react-bits/ui/button";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "../../hooks/use-favorites";
 import {
-  getArticleFavoriteId,
-  getServiceFavoriteId,
+  getArticleFavoriteKeys,
+  getServiceFavoriteKeys,
 } from "../../lib/favorites-ids";
 import {
   getEmptyFavorites,
@@ -43,21 +43,18 @@ export function FavoritesPageClient({
 
   const favoritedArticles = useMemo(() => {
     return articles.filter((article, index) => {
-      const id = getArticleFavoriteId(article, index);
-      const aliases = [article.slug, articleLegacySlugs[index]].filter(
-        (value): value is string => Boolean(value),
-      );
+      const { id, aliases } = getArticleFavoriteKeys(article, index, [
+        articleLegacySlugs[index],
+      ]);
       return isFavorite(favorites, "article", id, aliases);
     });
   }, [articleLegacySlugs, articles, favorites]);
 
   const favoritedServices = useMemo(() => {
     return services.filter((service, index) => {
-      const id = getServiceFavoriteId(service, index);
-      const aliases = [
-        getServiceSlug(service.title),
+      const { id, aliases } = getServiceFavoriteKeys(service, index, [
         serviceLegacySlugs[index],
-      ].filter((value): value is string => Boolean(value));
+      ]);
       return isFavorite(favorites, "service", id, aliases);
     });
   }, [favorites, serviceLegacySlugs, services]);

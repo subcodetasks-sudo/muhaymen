@@ -7,6 +7,8 @@ import {
   getArticleBySlug,
   getArticleSeoText,
 } from "@/features/landing-page/lib/article-cms";
+import { getArticlesContent } from "@/features/landing-page/lib/cms";
+import { getAllArticlesWithCategory } from "@/features/landing-page/utils/articles-utils";
 import type { AppLocale } from "@/features/landing-page/types";
 import { ApiError } from "@/lib/api";
 
@@ -74,6 +76,11 @@ export default async function Page({ params }: PageProps) {
     throw error;
   }
 
+  const articlesContent = await getArticlesContent(appLocale);
+  const articleIndex = getAllArticlesWithCategory(articlesContent).findIndex(
+    (item) => item.slug === article.slug,
+  );
+
   const jsonLd = buildArticleJsonLd(article, appLocale);
 
   return (
@@ -85,6 +92,7 @@ export default async function Page({ params }: PageProps) {
       <ArticleDetailPage
         locale={appLocale}
         article={article}
+        articleIndex={articleIndex}
         homeLabel={t("homeLabel")}
         backLabel={t("backToArticles")}
         articlesLabel={t("fallbackTitle")}

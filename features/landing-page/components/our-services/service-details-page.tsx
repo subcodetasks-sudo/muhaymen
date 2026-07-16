@@ -13,7 +13,7 @@ import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
 import type { ServiceDetail } from "../../lib/service-cms";
 import type { AppLocale } from "../../types";
-import { getServiceFavoriteId } from "../../lib/favorites-ids";
+import { getServiceFavoriteKeys } from "../../lib/favorites-ids";
 import { FavoriteButton } from "../favorites/favorite-button";
 import { Footer } from "../layout/footer";
 
@@ -45,9 +45,10 @@ export function ServiceDetailsPage({
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
   const PathSeparator = isRtl ? ChevronLeft : ChevronRight;
   const serviceTitle = stripHtml(service.title);
-  const favoriteId = getServiceFavoriteId(service, serviceIndex);
-  const aliases = [service.slug, legacySlug].filter(
-    (value): value is string => Boolean(value) && value !== favoriteId,
+  const { id: favoriteId, aliases } = getServiceFavoriteKeys(
+    service,
+    serviceIndex,
+    [service.slug, legacySlug],
   );
 
   return (

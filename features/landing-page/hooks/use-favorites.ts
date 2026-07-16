@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { showSuccessToast } from "@/components/themed-toast";
@@ -14,10 +15,19 @@ import {
   type FavoritesState,
 } from "../lib/favorites-storage";
 
+const emptySubscribe = () => () => {};
+
 export function useFavorites() {
+  const isServer = useSyncExternalStore(
+    emptySubscribe,
+    () => false,
+    () => true,
+  );
+
   return useQuery({
     queryKey: favoritesKeys.all,
     queryFn: readFavorites,
+    enabled: !isServer,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
