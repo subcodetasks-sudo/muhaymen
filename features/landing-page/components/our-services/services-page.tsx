@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getDirection } from "@/i18n/locale";
 import { getServicesContent, getServicesSeoText } from "../../lib/cms";
@@ -23,6 +23,7 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
   const direction = getDirection(locale);
   const isRtl = direction === "rtl";
   const BackArrow = isRtl ? ArrowRight : ArrowLeft;
+  const ForwardArrow = isRtl ? ArrowLeft : ArrowRight;
   const [content, t] = await Promise.all([
     getServicesContent(locale),
     getTranslations("ServicesPage"),
@@ -148,35 +149,82 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
             </section>
 
             {firstService ? (
-              <section className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
-                <article className="overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-primary/10 via-card to-card">
-                  <div className="grid h-full gap-8 p-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:p-10">
-                    <div className="flex h-18 w-18 items-center justify-center rounded-[1.5rem] border border-primary/15 bg-background text-2xl font-black text-primary shadow-sm">
-                      {fallbackIcons[0]}
+              <section className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-stretch">
+                <div className="flex flex-col gap-6">
+                  <article className="overflow-hidden rounded-[2rem] border border-border bg-linear-to-br from-primary/10 via-card to-card">
+                    <div className="grid gap-6 p-7 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-8 lg:p-8">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-primary/15 bg-background text-xl font-black text-primary shadow-sm">
+                        {fallbackIcons[0]}
+                      </div>
+
+                      <div>
+                        <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-background/80 px-3 py-1 text-sm font-bold text-primary">
+                          <CheckCircle2 size={16} />
+                          {t("featuredLabel")}
+                        </div>
+                        <h2
+                          className="text-2xl font-black leading-tight text-card-foreground md:text-3xl [&_p]:contents"
+                          dangerouslySetInnerHTML={{ __html: firstService.title }}
+                        />
+                        <div
+                          className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base [&_p]:mb-3 [&_p:last-child]:mb-0"
+                          dangerouslySetInnerHTML={{ __html: firstService.description }}
+                        />
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="mt-5 rounded-full font-bold"
+                          asChild
+                        >
+                          <Link href={`/services/${getServiceSlug(firstService.title)}`}>
+                            {t("featuredExplore")}
+                            <ForwardArrow className="ms-2" size={14} />
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </article>
+
+                  <aside className="relative flex min-h-0 flex-1 flex-col justify-between overflow-hidden rounded-[2rem] border border-border bg-foreground p-7 text-background lg:p-8">
+                    <div className="pointer-events-none absolute -inset-e-16 -top-16 h-48 w-48 rounded-full bg-primary/30 blur-3xl" />
+                    <div className="pointer-events-none absolute -inset-s-10 -bottom-20 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
+
+                    <div className="relative">
+                      <p className="text-sm font-bold uppercase tracking-[0.24em] text-primary">
+                        {t("featuredAsideLabel")}
+                      </p>
+                      <h3 className="mt-3 text-2xl font-black leading-tight md:text-3xl">
+                        {t("featuredAsideTitle")}
+                      </h3>
+                      <p className="mt-3 max-w-md text-sm leading-relaxed text-background/70 md:text-base">
+                        {t("featuredAsideDescription")}
+                      </p>
                     </div>
 
-                    <div>
-                      <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-background/80 px-3 py-1 text-sm font-bold text-primary">
-                        <CheckCircle2 size={16} />
-                        {t("featuredLabel")}
-                      </div>
-                      <h2
-                        className="text-3xl font-black leading-tight text-card-foreground md:text-4xl [&_p]:contents"
-                        dangerouslySetInnerHTML={{ __html: firstService.title }}
-                      />
-                      <div
-                        className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground [&_p]:mb-4 [&_p:last-child]:mb-0"
-                        dangerouslySetInnerHTML={{ __html: firstService.description }}
-                      />
+                    <div className="relative mt-8 flex flex-wrap gap-3">
+                      <Button size="lg" className="rounded-full font-bold" asChild>
+                        <Link href={{ pathname: "/", hash: "contact" }}>
+                          {t("startProject")}
+                        </Link>
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="rounded-full border-background/25 bg-transparent font-bold text-background hover:bg-background/10 hover:text-background"
+                        asChild
+                      >
+                        <Link href="/works">{t("seeWork")}</Link>
+                      </Button>
                     </div>
-                  </div>
-                </article>
+                  </aside>
+                </div>
 
                 <div className="grid gap-6">
                   {content.services.slice(0, 3).map((service, index) => (
                     <ServiceCard
                       key={`${service.title}-${index}`}
                       service={service}
+                      index={index}
                       href={`/services/${getServiceSlug(service.title)}`}
                     />
                   ))}
@@ -201,6 +249,7 @@ export async function ServicesPage({ locale }: ServicesPageProps) {
                   <ServiceCard
                     key={`${service.title}-${index + 1}`}
                     service={service}
+                    index={index + 1}
                     href={`/services/${getServiceSlug(service.title)}`}
                   />
                 ))}

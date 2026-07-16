@@ -19,25 +19,33 @@ export function getServiceSlug(title: string) {
 }
 
 export function getServiceSeoText(service: CmsServiceItem) {
+  const metaTitle = stripHtml(service.meta_title);
+  const metaDescription = stripHtml(service.meta_description);
+
   return {
-    title: stripHtml(service.title),
-    description: stripHtml(service.description),
+    title: metaTitle || stripHtml(service.title),
+    description: metaDescription || stripHtml(service.description),
   };
 }
 
 export async function getServiceBySlug(locale: AppLocale, slug: string) {
   const content = await getServicesContent(locale);
-  const service = content.services.find((item) => getServiceSlug(item.title) === slug);
+  const index = content.services.findIndex(
+    (item) => getServiceSlug(item.title) === slug,
+  );
 
-  if (!service) {
+  if (index < 0) {
     return null;
   }
+
+  const service = content.services[index];
 
   return {
     service: {
       ...service,
       slug,
     },
+    index,
   };
 }
 

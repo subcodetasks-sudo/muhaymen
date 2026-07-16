@@ -79,6 +79,7 @@ export default async function Page({ params }: PageProps) {
       <ServiceDetailsPage
         locale={appLocale}
         service={result.service}
+        serviceIndex={result.index}
         homeLabel={t("homeLabel")}
         backLabel={t("backToServices")}
         servicesLabel={t("fallbackTitle")}

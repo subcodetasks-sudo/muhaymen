@@ -19,8 +19,12 @@ export function getWorkSeoText(content: WorkDetail) {
   const stripHtml = (value: string) => value.replace(/<[^>]*>/g, "").trim();
 
   return {
-    title: stripHtml(content.title),
-    description: stripHtml(content.description),
+    title: content.seo?.title
+      ? stripHtml(content.seo.title)
+      : stripHtml(content.title),
+    description: content.seo?.description
+      ? stripHtml(content.seo.description)
+      : stripHtml(content.description),
   };
 }
 
