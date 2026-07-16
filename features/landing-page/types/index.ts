@@ -90,7 +90,7 @@ export type HeroContent = {
   description: string;
   content: string;
   seo: CmsSeo;
-  image: CmsImage;
+  images: CmsImage[];
   section: HeroWhatsAppSection;
   sortOrder: number;
 };
@@ -129,6 +129,8 @@ export type CmsServiceItem = {
   image: CmsImage | null;
   title: string;
   description: string;
+  meta_title: string;
+  meta_description: string;
 };
 
 export type ServicesContent = {
@@ -184,6 +186,7 @@ export type WorkDetail = {
   description: string;
   image: WorkImage;
   category: WorkDetailCategory;
+  seo: CmsSeo;
 };
 
 export type WorkDetailResponse = ApiResponse<WorkDetail>;
@@ -273,6 +276,7 @@ export type ArticleDetail = {
   description: string;
   image: ArticleImage;
   category: ArticleDetailCategory;
+  seo: CmsSeo;
 };
 
 export type ArticleDetailResponse = ApiResponse<ArticleDetail>;

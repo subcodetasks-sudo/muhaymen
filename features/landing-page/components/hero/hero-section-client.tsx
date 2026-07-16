@@ -1,15 +1,16 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
-import SideRays from "@/components/SideRays";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/react-bits/ui/button";
+import { cn } from "@/lib/utils";
 import { useHeroContent } from "../../hooks/use-hero-content";
 import { scrollToSection } from "../../lib/scroll-to-section";
 import type { AppLocale, TextDirection } from "../../types";
+import { HeroMarquee } from "./hero-marquee";
+import SideRays from "@/components/react-bits/SideRays";
 
 const LANDING_PRIMARY = "#e9b10d";
 
@@ -48,11 +49,14 @@ export function HeroSectionClient({ locale, direction }: HeroSectionClientProps)
     );
   }
 
+  const heroImages = (content.images ?? []).filter((image) => Boolean(image.url));
+  const hasImages = heroImages.length > 0;
+
   return (
     <section
       id="hero"
       ref={ref}
-      className="relative flex min-h-dvh items-center justify-center overflow-hidden px-6 pt-20"
+      className="relative flex min-h-dvh items-center justify-center overflow-visible px-6 pt-20 pb-10"
       style={{ perspective: "1200px" }}
     >
       <div className="absolute inset-0 z-0">
@@ -71,92 +75,95 @@ export function HeroSectionClient({ locale, direction }: HeroSectionClientProps)
         />
       </div>
 
-      {isRtl && content.image?.url && (
-        <div 
-          className="absolute bottom-0 left-0 top-0 z-[1] w-full max-w-[500px] select-none opacity-40 pointer-events-none md:max-w-[600px] lg:max-w-[700px]"
-          style={{
-            maskImage: "linear-gradient(to right, black 30%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to right, black 30%, transparent 100%)",
-          }}
-        >
-          <Image
-            src={content.image.url}
-            alt={content.image.alt || ""}
-            width={1000}
-            height={1000}
-            className="h-full w-full object-cover object-left"
-            priority
-            unoptimized
-          />
-        </div>
-      )}
-
       <motion.div
         style={{ opacity, scale, rotateX, transformStyle: "preserve-3d" }}
-        className="z-10 mx-auto flex w-full max-w-7xl flex-col items-center text-center lg:items-start lg:text-start"
+        className={cn(
+          "z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:gap-12",
+          hasImages && "lg:grid-cols-2",
+        )}
       >
-        <motion.div
-          style={{ y: yBadge }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary"
+        <div
+          className={cn(
+            "flex flex-col",
+            hasImages
+              ? "items-center text-center lg:items-start lg:text-start"
+              : "mx-auto max-w-3xl items-center text-center",
+          )}
         >
-          <Sparkles size={16} />
-          <span
-            className="[&_p]:inline"
-            dangerouslySetInnerHTML={{ __html: content.content }}
-          />
-        </motion.div>
-
-        <motion.div
-          style={{ y: yTitle }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div
-            className="mb-6 text-4xl font-black max-w-[30ch] leading-[1.1] tracking-tight text-foreground md:text-7xl lg:text-8xl [&_p]:contents [&_strong]:text-primary"
-            dangerouslySetInnerHTML={{ __html: content.title }}
-          />
-        </motion.div>
-
-        <motion.div
-          style={{ y: ySubtitle }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <div
-            className="mb-12 max-w-3xl text-lg font-medium text-muted-foreground md:text-2xl [&_p]:contents"
-            dangerouslySetInnerHTML={{ __html: content.description }}
-          />
-        </motion.div>
-
-        <motion.div
-          style={{ y: yCTA }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex w-full flex-col items-center gap-4 sm:w-auto sm:flex-row"
-        >
-          <Button
-            size="lg"
-            className="h-14 w-full rounded-full bg-primary px-8 text-lg font-bold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 sm:w-auto"
-            onClick={() => scrollToSection("contact")}
+          <motion.div
+            style={{ y: yBadge }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-medium text-primary"
           >
-            {t("primaryCta")}
-            <CtaArrow className="ms-2" size={20} />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-14 w-full rounded-full border-2 px-8 text-lg font-bold sm:w-auto"
-            onClick={() => scrollToSection("services")}
+            <Sparkles size={16} />
+            <span
+              className="[&_p]:inline"
+              dangerouslySetInnerHTML={{ __html: content.content }}
+            />
+          </motion.div>
+
+          <motion.div
+            style={{ y: yTitle }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {t("secondaryCta")}
-          </Button>
-        </motion.div>
+            <div
+              className="mb-5 max-w-[28ch] text-3xl font-black leading-[1.15] tracking-tight text-foreground md:text-5xl lg:text-6xl [&_p]:contents [&_strong]:text-primary"
+              dangerouslySetInnerHTML={{ __html: content.title }}
+            />
+          </motion.div>
+
+          <motion.div
+            style={{ y: ySubtitle }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div
+              className="mb-10 max-w-2xl text-base font-medium text-muted-foreground md:text-lg [&_p]:contents"
+              dangerouslySetInnerHTML={{ __html: content.description }}
+            />
+          </motion.div>
+
+          <motion.div
+            style={{ y: yCTA }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row"
+          >
+            <Button
+              size="lg"
+              className="h-12 w-full rounded-full bg-primary px-7 text-base font-bold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 sm:w-auto"
+              onClick={() => scrollToSection("contact")}
+            >
+              {t("primaryCta")}
+              <CtaArrow className="ms-2" size={18} />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 w-full rounded-full border-2 px-7 text-base font-bold sm:w-auto"
+              onClick={() => scrollToSection("services")}
+            >
+              {t("secondaryCta")}
+            </Button>
+          </motion.div>
+        </div>
+
+        {hasImages && (
+          <motion.div
+            initial={{ opacity: 0, x: isRtl ? -40 : 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.25 }}
+            className="relative w-full bg-transparent"
+          >
+            <HeroMarquee images={heroImages} direction={direction} />
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );
