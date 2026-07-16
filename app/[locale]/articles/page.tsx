@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { ArticlesPage } from "@/features/landing-page/components/articles-page";
+import { ArticlesPage } from "@/features/landing-page/components/articles";
 import {
   getArticlesContent,
   getArticlesSeoText,

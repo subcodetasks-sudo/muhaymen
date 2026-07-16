@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { WorkDetailPage } from "@/features/landing-page/components/work-detail-page";
+import { WorkDetailPage } from "@/features/landing-page/components/portfolio";
 import {
   buildWorkJsonLd,
   getWorkBySlug,

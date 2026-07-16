@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { ArticleDetailPage } from "@/features/landing-page/components/article-detail-page";
+import { ArticleDetailPage } from "@/features/landing-page/components/articles";
 import {
   buildArticleJsonLd,
   getArticleBySlug,

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { ServiceDetailsPage } from "@/features/landing-page/components/service-details-page";
+import { ServiceDetailsPage } from "@/features/landing-page/components/our-services";
 import {
   buildServiceJsonLd,
   getServiceBySlug,

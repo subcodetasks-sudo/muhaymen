@@ -90,6 +90,7 @@
       "badge": "Services that make the difference",
       "title": "Integrated marketing solutions",
       "subtitle": "Tailored marketing solutions designed for your brand's needs and built to keep you ahead.",
+      "cta": "All services",
       "items": {
         "content": { "tag": "Content design", "title": "Content creation", "description": "Creative copy that reflects your identity and captivates your audience." },
         "social": { "tag": "Social media", "title": "Social media management", "description": "We build strong presence and daily engagement with your target audience." },

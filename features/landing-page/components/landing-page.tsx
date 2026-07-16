@@ -10,18 +10,17 @@ import {
   getServicesContent,
 } from "../lib/cms";
 import { landingCmsKeys } from "../lib/query-keys";
-import { AboutSection } from "./about-section";
-import { BlogSection } from "./blog-section";
-import { ClientsSection } from "./clients-section";
-import { ContactSection } from "./contact-section";
-import { CustomCursor } from "./custom-cursor";
-import { Footer } from "./footer";
-import { HeroSection } from "./hero-section";
-import { PortfolioSection } from "./portfolio-section";
-import { ProcessSection } from "./process-section";
-import { ServicesSection } from "./services-section";
-import { StatsSection } from "./stats-section";
-import { WhatsAppSection } from "./whatsapp-section";
+import { AboutSection } from "./about";
+import { BlogSection } from "./articles";
+import { ClientsSection } from "./clients";
+import { ContactSection } from "./contact";
+import { CustomCursor, Footer } from "./layout";
+import { HeroSection } from "./hero";
+import { PortfolioSection } from "./portfolio";
+import { ProcessSection } from "./process";
+import { ServicesSection } from "./our-services";
+import { StatsSection } from "./stats";
+import { WhatsAppSection } from "./whatsapp";
 import type { AppLocale } from "../types";
 
 export async function LandingPage() {
@@ -63,4 +62,3 @@ export async function LandingPage() {
     </HydrationBoundary>
   );
 }
-

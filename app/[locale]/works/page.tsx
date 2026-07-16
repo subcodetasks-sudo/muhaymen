@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { WorksPage } from "@/features/landing-page/components/works-page";
+import { WorksPage } from "@/features/landing-page/components/portfolio";
 import { getWorksContent, getWorksSeoText } from "@/features/landing-page/lib/cms";
 import type { AppLocale } from "@/features/landing-page/types";
 
