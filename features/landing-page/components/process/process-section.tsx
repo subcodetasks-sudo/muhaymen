@@ -84,7 +84,7 @@ function ProcessStepSlide({
         <div
           className={cn(
             "pointer-events-none absolute inset-e-6 top-5 select-none text-6xl font-black leading-none sm:text-8xl",
-            isCrown ? "text-white/15" : "text-primary/8",
+            isCrown ? "text-white/35" : "text-primary/25",
           )}
           dangerouslySetInnerHTML={{ __html: step.name }}
         />
@@ -152,7 +152,7 @@ function ProcessBarColumn({
   const { input, output } = getBarGrowRange(index, stepCount);
 
   const scaleY = useTransform(scrollYProgress, input, output);
-  const heightClass = index === 0 ? "h-[250px]" : index === 1 ? "h-[290px]" : index === 2 ? "h-[330px]" : index === 3 ? "h-[380px]" : "h-[440px]";
+  const heightClass = index === 0 ? "h-[310px]" : index === 1 ? "h-[350px]" : index === 2 ? "h-[390px]" : index === 3 ? "h-[440px]" : "h-[500px]";
 
   return (
     <div className={cn("group relative min-w-0 flex-1", heightClass)}>
@@ -172,7 +172,7 @@ function ProcessBarColumn({
             <div
               className={cn(
                 "pointer-events-none absolute inset-x-5 top-5 select-none text-7xl font-black leading-none",
-                isCrown ? "text-white/20" : "text-primary/8",
+                isCrown ? "text-white/40" : "text-primary/25",
               )}
               dangerouslySetInnerHTML={{ __html: step.name }}
             />
